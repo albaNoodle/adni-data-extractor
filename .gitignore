@@ -1,1 +1,4 @@
+data/dictionaries/*
+data/fenotypes/*
+data/patients/*
 node_modules
