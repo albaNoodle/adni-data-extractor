@@ -10,11 +10,17 @@ exports.AppModule = void 0;
 const common_1 = require("@nestjs/common");
 const app_controller_1 = require("./app.controller");
 const app_service_1 = require("./app.service");
+const adni_reader_module_1 = require("./adni-reader/adni-reader.module");
+const typeorm_1 = require("@nestjs/typeorm");
+const typeorm_config_1 = require("./config/typeorm.config");
 let AppModule = class AppModule {
 };
 AppModule = __decorate([
     common_1.Module({
-        imports: [],
+        imports: [
+            adni_reader_module_1.AdniReaderModule,
+            typeorm_1.TypeOrmModule.forRoot(typeorm_config_1.typeOrmConfig)
+        ],
         controllers: [app_controller_1.AppController],
         providers: [app_service_1.AppService],
     })
