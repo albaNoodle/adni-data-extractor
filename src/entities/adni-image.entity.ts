@@ -6,9 +6,19 @@ export class AdniImage extends BaseEntity {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @ManyToOne(() => Patient, patient => patient.images, {eager: true})
+    @Column()
+    imageUid: number;
+
+    @ManyToOne(() => Patient, patient => patient.adniImages, {eager: false})
     patient: Patient;
 
     @Column()
     patientId?: number;
+    
+    @Column()
+    examDate: Date;
+
+    @Column()
+    visCode: string;
+
 }

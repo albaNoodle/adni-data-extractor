@@ -3046,6 +3046,26 @@
         "signature": "8e609bb71c20b858c77f0e9f90bb1319db8477b13f9f965f1a1e18524bf50881",
         "affectsGlobalScope": false
       },
+      "../src/enums/diagnosis.enum.ts": {
+        "version": "f9ec1f974b6e709297c145f1b1ef426f94199af4560be2469050c75164122125",
+        "signature": "84fc7911394328f446b8d00012c56f574559aec213a4691f1d986962fe02fc89",
+        "affectsGlobalScope": false
+      },
+      "../src/entities/patient.entity.ts": {
+        "version": "69196375f33786bcbabb78a1083079291d8005d6419269519e5c9d5b6870968b",
+        "signature": "23a5342b428f6dab14f000823ab27bcd05092b77aeb66b246190f01f9b892f18",
+        "affectsGlobalScope": false
+      },
+      "../src/entities/adni-image.entity.ts": {
+        "version": "72c7b6670d190b80706d41cca493043f24db2c0e5ea09f7164667e254b540750",
+        "signature": "b2b40e3969ad0c204354a3bbf712c19f53691eb047a5e7886214c1d283419286",
+        "affectsGlobalScope": false
+      },
+      "../src/entities/volume.entity.ts": {
+        "version": "a6a3c72b82a04f28024278c660aed3c8d25a2f49114e9c77822efa74f2c5258d",
+        "signature": "28747b1438967996dd0d2d484c4e8c423fd73eea7c47b1975f220a67b2cf168b",
+        "affectsGlobalScope": false
+      },
       "../node_modules/@types/anymatch/index.d.ts": {
         "version": "48b52264fa193879a074197839dbb4796fa07e86350ff888e5361e06aa46df76",
         "signature": "48b52264fa193879a074197839dbb4796fa07e86350ff888e5361e06aa46df76",
@@ -6236,6 +6256,19 @@
       "../src/config/typeorm.config.ts": [
         "../node_modules/@nestjs/typeorm/index.d.ts"
       ],
+      "../src/entities/adni-image.entity.ts": [
+        "../node_modules/typeorm/index.d.ts",
+        "../src/entities/patient.entity.ts"
+      ],
+      "../src/entities/patient.entity.ts": [
+        "../node_modules/typeorm/index.d.ts",
+        "../src/entities/adni-image.entity.ts",
+        "../src/enums/diagnosis.enum.ts"
+      ],
+      "../src/entities/volume.entity.ts": [
+        "../node_modules/typeorm/index.d.ts",
+        "../src/entities/adni-image.entity.ts"
+      ],
       "../src/main.ts": [
         "../node_modules/@nestjs/core/index.d.ts",
         "../src/app.module.ts"
@@ -8850,6 +8883,19 @@
       ],
       "../src/config/typeorm.config.ts": [
         "../node_modules/@nestjs/typeorm/index.d.ts"
+      ],
+      "../src/entities/adni-image.entity.ts": [
+        "../node_modules/typeorm/index.d.ts",
+        "../src/entities/patient.entity.ts"
+      ],
+      "../src/entities/patient.entity.ts": [
+        "../node_modules/typeorm/index.d.ts",
+        "../src/entities/adni-image.entity.ts",
+        "../src/enums/diagnosis.enum.ts"
+      ],
+      "../src/entities/volume.entity.ts": [
+        "../node_modules/typeorm/index.d.ts",
+        "../src/entities/adni-image.entity.ts"
       ]
     },
     "semanticDiagnosticsPerFile": []

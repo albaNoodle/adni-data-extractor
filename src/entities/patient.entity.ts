@@ -8,7 +8,7 @@ export class Patient extends BaseEntity {
     id: number;
   
     @Column()
-    title: Diagnosis;
+    diagnosis: Diagnosis;
 
     @OneToMany(() => AdniImage, image => image.patient)
     adniImages: AdniImage[];
