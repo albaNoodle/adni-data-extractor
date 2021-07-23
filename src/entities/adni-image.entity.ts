@@ -1,4 +1,4 @@
-import { BaseEntity, Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { BaseEntity, Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { Patient } from "./patient.entity";
 
 @Entity()
@@ -21,4 +21,9 @@ export class AdniImage extends BaseEntity {
     @Column()
     visCode: string;
 
+    @CreateDateColumn({ nullable: false, precision: null, default: () => 'CURRENT_TIMESTAMP' })
+    createdAt: Date;
+    
+    @UpdateDateColumn({ nullable: false, precision: null, default: () => 'CURRENT_TIMESTAMP' })
+    updatedAt: Date;
 }
