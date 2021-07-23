@@ -1,0 +1,16 @@
+{
+  "type": "mysql",
+  "host": "localhost",
+  "port": 3306,
+  "username": "root",
+  "password": "",
+  "database": "adni",
+  "entities": [{
+
+  }],
+  "synchronize": false,
+  "migrations": ["./migrations/*.{js,ts}"],
+  "cli": {
+    "migrationsDir": "./migrations"
+  }
+}
