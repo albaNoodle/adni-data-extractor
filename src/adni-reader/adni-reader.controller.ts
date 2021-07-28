@@ -1,7 +1,6 @@
 import { ClassSerializerInterceptor, Controller, Get, Query, UseInterceptors } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { OptionsInDto } from 'src/dtos/options.in.dto';
-import { CsvParser } from 'nest-csv-parser';
 import * as fs from 'fs';
 import { join } from 'path';
 
@@ -10,7 +9,6 @@ import { join } from 'path';
 @UseInterceptors(ClassSerializerInterceptor)
 export class AdniReaderController {
     constructor(
-        private readonly csvParser: CsvParser
     ) {}
 
     @Get()
