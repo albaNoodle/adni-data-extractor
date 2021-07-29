@@ -4,6 +4,31 @@ import { AdniImagesLoadInDto } from './dto/adni-images.load.in.dto';
 import * as fs from 'fs';
 import { join } from 'path';
 
+
+const NOT_FENOTYPE_FIELDS = [
+    'COLPROT',
+    'RID',
+    'VISCODE',
+    'VISCODE2',
+    'EXAMDATE',
+    'VERSION',
+    'LONISID',
+    'LONIUID',
+    'IMAGEUID',
+    'RUNDATE',
+    'STATUS',
+    'OVERALLQC',
+    'TEMPQC',
+    'FRONTQC',
+    'PARQC',
+    'INSULAQC',
+    'OCCQC',
+    'BGQC',
+    'CWMQC',
+    'VENTQC',
+    'LHIPQC',
+    'RHIPQC'
+]
 @Injectable()
 export class AdniImagesService {
     constructor(
@@ -22,12 +47,16 @@ export class AdniImagesService {
         const stream = fs.createReadStream(join(dirname,'data','test','phenotypes.csv')).pipe(csvParser())
         .on('data', (row) => {
             console.log(row)
-            console.log(row.size)
-            console.log(row[0])
+            console.log(typeof row['LONISID'])
             // use row data
+
+            //Create the image
+
+            //Create the fenotypes assosiated with the image
         })
     
         .on('end', () => {
+            fs.close;
             // handle end of CSV
         })
         return null;

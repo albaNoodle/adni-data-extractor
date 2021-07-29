@@ -1,5 +1,6 @@
-import { BaseEntity, Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { BaseEntity, Column, CreateDateColumn, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { Patient } from "./patient.entity";
+import { Phenotype } from "./phenotype.entity";
 
 @Entity()
 export class AdniImage extends BaseEntity {
@@ -20,6 +21,9 @@ export class AdniImage extends BaseEntity {
 
     @Column()
     visCode: string;
+
+    @OneToMany(() => Phenotype, phenotype => phenotype.adniImage, {eager: false})
+    phenotypes: Phenotype[];
 
     @CreateDateColumn({ nullable: false, precision: null, default: () => 'CURRENT_TIMESTAMP' })
     createdAt: Date;
