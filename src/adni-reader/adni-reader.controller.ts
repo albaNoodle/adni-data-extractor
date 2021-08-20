@@ -13,7 +13,7 @@ export class AdniReaderController {
 
     @Get()
     @ApiOperation({ summary: 'Get phenotypes' })
-    async uploadAvatar(@Query() optionsDto: OptionsInDto): Promise<File> {
+    async readCsv(@Query() optionsDto: OptionsInDto): Promise<File> {
         const csvParser = require('csv-parser');
         console.log(__dirname)
         let dirname = __dirname;
