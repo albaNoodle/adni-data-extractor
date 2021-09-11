@@ -24,7 +24,7 @@ export class AdniReaderController {
         console.log(dirname)
         const stream = fs.createReadStream(join(dirname,'data','test','patients.csv')).pipe(csvParser())
         .on('data', (row) => {
-            console.log(row)
+            // console.log(row)
             // use row data
         })
     

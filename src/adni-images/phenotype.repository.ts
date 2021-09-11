@@ -1,5 +1,5 @@
 import { Phenotype } from "src/entities/phenotype.entity";
-import { EntityRepository, Repository } from "typeorm";
+import { EntityRepository, getConnection, Repository } from "typeorm";
 import { PhenotypeCreateDto } from "./dto/phenotype.create.dto";
 
 @EntityRepository(Phenotype)
@@ -11,5 +11,31 @@ export class PhenotypeRepository extends Repository<Phenotype>{
         phenotype.brainPartKey = brainPartKey;
         phenotype.value = value;
         return phenotype.save();
+    }
+
+    async createOrUpdatePhenotypes(phenotypeCreateDtos: PhenotypeCreateDto[]): Promise<Phenotype[]>  {
+        return this.manager.transaction( 'SERIALIZABLE', async () => {
+        const phenotipes = phenotypeCreateDtos.map((phenotypeCreate) => {
+            const { imageUid, brainPartKey, value } = phenotypeCreate;
+            const phenotype = this.create();
+            phenotype.imageUid = imageUid;
+            phenotype.brainPartKey = brainPartKey;
+            phenotype.value = value;
+            return phenotype;
+        });
+
+        await getConnection()
+        .createQueryBuilder()
+        .insert()
+        .into(Phenotype)
+        .values(phenotipes)
+        .orUpdate({ conflict_target: ['imageUid', 'brainPartKey'], overwrite: [ 'value'] })
+        .updateEntity(false)
+        .execute();
+        
+        await Promise.all(phenotipes.map(async (p) => await p.reload()));
+
+        return phenotipes;
+    });
     }
 }
