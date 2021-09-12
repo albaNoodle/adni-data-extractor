@@ -69,7 +69,7 @@ export class AdniImagesService {
     for await (const row of stream) {
       const createAdniImage: AdniImageCreateDto = {
         visCode: row['VISCODE'],
-        patientId: row['RID'],
+        rid: row['RID'],
         examDate: row['EXAMDATE'],
         imageUid: row['IMAGEUID'],
       }

@@ -15,7 +15,7 @@ export class AdniImageCreateDto {
 
     @IsNotEmpty()
     @IsNumber()
-    patientId: number;
+    rid: number;
     
     @IsNotEmpty()
     @IsDateString()

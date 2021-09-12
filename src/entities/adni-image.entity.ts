@@ -1,4 +1,5 @@
-import { BaseEntity, Column, CreateDateColumn, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { BaseEntity, Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { PatientVisit } from "./patient-visit.entity";
 import { Patient } from "./patient.entity";
 import { Phenotype } from "./phenotype.entity";
 
@@ -10,11 +11,15 @@ export class AdniImage extends BaseEntity {
     @Column()
     imageUid: number;
 
-    @ManyToOne(() => Patient, patient => patient.adniImages, {eager: false})
-    patient: Patient;
-
     @Column()
-    patientId?: number;
+    rid: number;
+
+    @ManyToOne(() => PatientVisit, patientVisit => patientVisit.adniImage, {eager: false})
+    @JoinColumn([{name: 'rid', referencedColumnName: 'rid'}, {name: 'imageUid', referencedColumnName: 'imageUid'}])
+    patientVisit: PatientVisit;
+
+    // @Column()
+    // patientVisitId?: number;
     
     @Column()
     examDate: Date;
