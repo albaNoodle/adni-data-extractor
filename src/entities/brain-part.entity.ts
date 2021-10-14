@@ -6,10 +6,13 @@ export class BrainPart extends BaseEntity {
     id: number;
 
     @Column()
-    key: string;
+    keyname: string;
 
     @Column()
     humanName: string;
+
+    @Column()
+    dictionary: string;
 
     @CreateDateColumn({ nullable: false, precision: null, default: () => 'CURRENT_TIMESTAMP' })
     createdAt: Date;

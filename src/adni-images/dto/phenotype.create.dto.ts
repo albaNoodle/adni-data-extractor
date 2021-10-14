@@ -12,7 +12,7 @@ export class PhenotypeCreateDto {
 
     @IsNotEmpty()
     @IsString()
-    brainPartKey: string;
+    brainPartKeyname: string;
 
     @IsNotEmpty()
     @IsNumber()

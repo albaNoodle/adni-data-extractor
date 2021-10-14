@@ -15,11 +15,11 @@ export class Phenotype extends BaseEntity {
     imageUid?: number;
 
     @ManyToOne(() => BrainPart)
-    @JoinColumn({name: 'brainPartKey', referencedColumnName: 'key'})
+    @JoinColumn({name: 'brainPartKeyname', referencedColumnName: 'keyname'})
     brainPart: BrainPart;
 
     @Column()
-    brainPartKey?: string;
+    brainPartKeyname?: string;
 
     @Column()
     value: number;

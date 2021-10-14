@@ -5,7 +5,7 @@ import { AdniImagesService } from './adni-images.service';
 import { AdniImagesLoadInDto } from './dto/adni-images.load.in.dto';
 
 @Controller('adni-images')
-@ApiTags('Adni reader')
+@ApiTags('Adni images')
 @UseInterceptors(ClassSerializerInterceptor)
 export class AdniImagesController {
     constructor(

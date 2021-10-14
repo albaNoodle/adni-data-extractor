@@ -25,11 +25,11 @@ export class initial1626915455223 implements MigrationInterface {
               `id` int NOT NULL AUTO_INCREMENT, \
               `imageUid` int NOT NULL, \
               `value` int NOT NULL, \
-              `brainPartKey` varchar(128) NOT NULL, \
+              `brainPartKeyname` varchar(128) NOT NULL, \
               `createdAt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP, \
               `updatedAt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP, \
-              UNIQUE INDEX `IDX_adni_image_brainPartKey` (`imageUid`, `brainPartKey`), \
-              INDEX `IDX_phenotype_brainPartKey` (`brainPartKey`), \
+              UNIQUE INDEX `IDX_adni_image_brainPartKeyname` (`imageUid`, `brainPartKeyname`), \
+              INDEX `IDX_phenotype_brainPartKey` (`brainPartKeyname`), \
               PRIMARY KEY (`id`) \
               ) ENGINE=InnoDB',
           ); 
@@ -70,11 +70,13 @@ export class initial1626915455223 implements MigrationInterface {
            await queryRunner.query(
             'CREATE TABLE `brain_part` ( \
               `id` int NOT NULL AUTO_INCREMENT, \
-              `key` varchar(14) NOT NULL, \
+              `keyname` varchar(14) NOT NULL, \
               `humanName` varchar(256) NOT NULL, \
+              `dictionary` varchar(128) NOT NULL, \
               `createdAt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP, \
               `updatedAt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP, \
-              UNIQUE INDEX `IDX_brain_part_key` (`key`), \
+              UNIQUE INDEX `IDX_brain_part_keyname_dict` (`keyname`,`dictionary`), \
+              INDEX `IDX_brain_part_dictionary` (`dictionary`), \
               PRIMARY KEY (`id`) \
               ) ENGINE=InnoDB',
           ); 

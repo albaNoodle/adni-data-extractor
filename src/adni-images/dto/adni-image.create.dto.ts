@@ -1,9 +1,9 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsDateString, IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import { IsDateString, IsNotEmpty, IsNumber, IsNumberString, IsString } from 'class-validator';
  
 export class AdniImageCreateDto {
     @IsNotEmpty()
-    @IsString()
+    @IsNumberString()
     @ApiProperty({
     example: 12345,
     description: 'ADNI UID of the image',

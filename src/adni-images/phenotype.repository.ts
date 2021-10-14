@@ -5,10 +5,10 @@ import { PhenotypeCreateDto } from "./dto/phenotype.create.dto";
 @EntityRepository(Phenotype)
 export class PhenotypeRepository extends Repository<Phenotype>{ 
     async createPhenotype(phenotypeCreateDto: PhenotypeCreateDto): Promise<Phenotype> {
-        const { imageUid, brainPartKey, value } = phenotypeCreateDto;
+        const { imageUid, brainPartKeyname, value } = phenotypeCreateDto;
         const phenotype = this.create();
         phenotype.imageUid = imageUid;
-        phenotype.brainPartKey = brainPartKey;
+        phenotype.brainPartKeyname = brainPartKeyname;
         phenotype.value = value;
         return phenotype.save();
     }
@@ -16,10 +16,10 @@ export class PhenotypeRepository extends Repository<Phenotype>{
     async createOrUpdatePhenotypes(phenotypeCreateDtos: PhenotypeCreateDto[]): Promise<Phenotype[]>  {
         return this.manager.transaction( 'SERIALIZABLE', async () => {
         const phenotipes = phenotypeCreateDtos.map((phenotypeCreate) => {
-            const { imageUid, brainPartKey, value } = phenotypeCreate;
+            const { imageUid, brainPartKeyname, value } = phenotypeCreate;
             const phenotype = this.create();
             phenotype.imageUid = imageUid;
-            phenotype.brainPartKey = brainPartKey;
+            phenotype.brainPartKeyname = brainPartKeyname;
             phenotype.value = value;
             return phenotype;
         });
@@ -29,7 +29,7 @@ export class PhenotypeRepository extends Repository<Phenotype>{
         .insert()
         .into(Phenotype)
         .values(phenotipes)
-        .orUpdate({ conflict_target: ['imageUid', 'brainPartKey'], overwrite: [ 'value'] })
+        .orUpdate({ conflict_target: ['imageUid', 'brainPartKeyname'], overwrite: [ 'value'] })
         .updateEntity(false)
         .execute();
         

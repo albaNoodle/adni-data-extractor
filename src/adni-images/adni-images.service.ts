@@ -6,7 +6,6 @@ import { join } from 'path'
 import { AdniImageCreateDto } from './dto/adni-image.create.dto'
 import { InjectRepository } from '@nestjs/typeorm'
 import { AdniImageRepository } from './adni-image.repository'
-import { from } from 'rxjs'
 import { PhenotypeRepository } from './phenotype.repository'
 import { PhenotypeCreateDto } from './dto/phenotype.create.dto'
 import { In } from 'typeorm'
@@ -80,7 +79,7 @@ export class AdniImagesService {
       for (let i = 22; i < keys.length - 1; i++) {
         const createPhenotypeDto: PhenotypeCreateDto = {
           imageUid: row['IMAGEUID'],
-          brainPartKey: keys[i],
+          brainPartKeyname: keys[i],
           value: row[keys[i]],
         }
         phenotypesToProcess.push(createPhenotypeDto)
