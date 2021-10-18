@@ -1,4 +1,4 @@
-import { AdniImage } from "src/entities/adni-image.entity";
+import { AdniImage } from "../entities/adni-image.entity";
 import { EntityRepository, Repository, UpdateResult } from "typeorm";
 import { AdniImageCreateDto } from "./dto/adni-image.create.dto";
 

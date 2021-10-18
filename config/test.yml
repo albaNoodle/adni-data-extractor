@@ -1,0 +1,11 @@
+db:
+  type: 'mysql'
+  port: 3306
+  host: 'localhost'
+  database: 'adni_test'
+  username: 'root'
+  password: ''
+  synchronize: false
+  logging: false
+  charset: 'utf8mb4'
+  timezone: 'Z'

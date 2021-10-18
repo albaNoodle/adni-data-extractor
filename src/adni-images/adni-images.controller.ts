@@ -1,6 +1,6 @@
 import { Body, ClassSerializerInterceptor, Controller, Inject, Post, UseInterceptors } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
-import { AdniImage } from 'src/entities/adni-image.entity';
+import { AdniImage } from '../entities/adni-image.entity';
 import { AdniImagesService } from './adni-images.service';
 import { AdniImagesLoadInDto } from './dto/adni-images.load.in.dto';
 

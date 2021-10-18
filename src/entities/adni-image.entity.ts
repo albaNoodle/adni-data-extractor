@@ -1,6 +1,5 @@
 import { BaseEntity, Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { PatientVisit } from "./patient-visit.entity";
-import { Patient } from "./patient.entity";
 import { Phenotype } from "./phenotype.entity";
 
 @Entity()

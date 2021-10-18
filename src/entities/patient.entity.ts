@@ -1,6 +1,5 @@
-import { Diagnosis } from "src/enums/diagnosis.enum";
+import { Diagnosis } from "../enums/diagnosis.enum";
 import { BaseEntity, Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
-import { AdniImage } from './adni-image.entity';
 import { PatientVisit } from "./patient-visit.entity";
 
 @Entity()

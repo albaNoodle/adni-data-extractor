@@ -1,4 +1,4 @@
-import { Phenotype } from "src/entities/phenotype.entity";
+import { Phenotype } from "../entities/phenotype.entity";
 import { EntityRepository, getConnection, Repository } from "typeorm";
 import { PhenotypeCreateDto } from "./dto/phenotype.create.dto";
 

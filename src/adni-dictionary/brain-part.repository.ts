@@ -1,5 +1,5 @@
-import { BrainPart } from "src/entities/brain-part.entity";
-import { EntityRepository, getConnection, Repository } from "typeorm";
+import { BrainPart } from "../entities/brain-part.entity";
+import { EntityRepository, Repository } from "typeorm";
 import { BrainPartCreateDto } from "./dto/brain-part.create.dto";
 
 @EntityRepository(BrainPart)
