@@ -55,7 +55,10 @@ export class AdniImagesService {
     }
     console.log(dirname)
     const stream = fs
-      .createReadStream(join(dirname, 'data', 'test', 'phenotypes.csv'))
+      .createReadStream(
+        // join(dirname, 'data', 'test', 'phenotypes.csv')
+        adniImagesLoadInDto.path
+        )
       .pipe(csvParser())
       .on('end', () => {
         fs.close

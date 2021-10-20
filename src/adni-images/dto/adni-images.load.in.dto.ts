@@ -8,5 +8,5 @@ export class AdniImagesLoadInDto {
    example: 'data/test/phenotypes.csv',
    description: 'csv file with the list of the patients id that want to extract the data',
  })
- adniImagesFilepath: string;
+ path: string;
 }

@@ -14,20 +14,24 @@ export class AdniDictionaryService {
         private brainPartRepository: BrainPartRepository
       ) {}
 
-    async loadAdniDictionary(): Promise<BrainPart[]> {
+    async loadAdniDictionary(path: string): Promise<BrainPart[]> {
         const adniBrainParts: Promise<BrainPart>[] = []
         const csvParser = require('csv-parser')
         console.log(__dirname)
         let dirname = __dirname
         const distIdx = dirname.indexOf('/dist')
         if (distIdx > 0) {
-            dirname = dirname.substring(distIdx, -1)
+          dirname = dirname.substring(distIdx, -1)
         }
         console.log(dirname)
         const stream = fs
-      .createReadStream(join(dirname, 'data', 'test', 'dictionary.csv'))
-      .pipe(csvParser())
-      .on('end', () => {
+        .createReadStream(
+          path
+          // '/home/alba/projects/adni-data-extractor/data/test/dictionary.csv'
+          // join(dirname, 'data', 'test', 'dictionary.csv')
+          )
+          .pipe(csvParser())
+          .on('end', () => {
         fs.close
         // handle end of CSV
       })
