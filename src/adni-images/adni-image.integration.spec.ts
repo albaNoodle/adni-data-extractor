@@ -24,7 +24,6 @@ describe('AdniDictionaryController', () => {
 
   beforeEach(async () => {
     await entityManager.delete(AdniImage, {});
-    // await entityManager.delete(Phenotype, {});
   });
 
   afterAll(async () => {
