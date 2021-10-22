@@ -4,7 +4,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { initAppForTestModule } from '../test/utils';
 import { TypeOrmConfig } from '../../config/typeorm.config';
 import * as request from 'supertest';
-import { EntityManager } from 'typeorm';
+import { EntityManager, In } from 'typeorm';
 import { AdniImagesModule } from './adni-images.module';
 import { AdniImage } from '../entities/adni-image.entity';
 import { Phenotype } from '../entities/phenotype.entity';
@@ -15,7 +15,7 @@ describe('AdniDictionaryController', () => {
 
   beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      imports: [TypeOrmModule.forRoot(TypeOrmConfig), AdniImagesModule]
+      imports: [TypeOrmModule.forRoot(TypeOrmConfig), AdniImagesModule],
     }).compile();
 
     entityManager = module.get<EntityManager>(EntityManager);
@@ -23,16 +23,16 @@ describe('AdniDictionaryController', () => {
   });
 
   beforeEach(async () => {
-    await entityManager.delete(AdniImage, { })
-    await entityManager.delete(Phenotype, { })
-  })
+    await entityManager.delete(AdniImage, {});
+    // await entityManager.delete(Phenotype, {});
+  });
 
   afterAll(async () => {
     await app.close();
     app = null;
   });
 
-  describe('loadAdniImages', () =>{
+  describe('loadAdniImages', () => {
     it('success', async () => {
       const adniImagesNb = (await entityManager.find(AdniImage, {})).length;
       expect(adniImagesNb).toBe(0);
@@ -40,24 +40,43 @@ describe('AdniDictionaryController', () => {
       const phenotypesNb = (await entityManager.find(Phenotype, {})).length;
       expect(phenotypesNb).toBe(0);
 
-      const response = await request(
-        app.getHttpServer()).post('/adni-images').send({path: 'data/test/phenotypes.csv'});
+      await request(app.getHttpServer()).post('/adni-images').send({ path: 'data/test/phenotypes.csv' }).expect(201);
 
-      expect(response.status).toEqual(201);
+      const result1 = await entityManager.find(AdniImage, {});
+      expect(result1.length).toBeGreaterThan(adniImagesNb);
 
-      const result = await entityManager.find(AdniImage, {});
-      expect(result.length).toBeGreaterThan(adniImagesNb);
+      expect(result1.map((ai) => ai.imageUid)).toContain(1);
+      expect(result1.map((ai) => ai.imageUid)).toContain(2);
+      expect(result1.map((ai) => ai.imageUid)).toContain(3);
 
-      expect(result.map((ai) => ai.imageUid)).toContain(1);
-      expect(result.map((ai) => ai.imageUid)).toContain(2);
-      expect(result.map((ai) => ai.imageUid)).toContain(3);
+      const resultPh1 = await entityManager.find(Phenotype, {});
+      expect(resultPh1.length).toBeGreaterThan(phenotypesNb);
 
-      const resultPh = await entityManager.find(Phenotype, {});
-      expect(resultPh.length).toBeGreaterThan(phenotypesNb);
+      expect(resultPh1.map((ph) => ph.value)).toContain(75103);
+      expect(resultPh1.map((ph) => ph.value)).toContain(75100);
+      expect(resultPh1.map((ph) => ph.value)).toContain(75102);
 
-      expect(resultPh.map((ph) => ph.value)).toContain(75103);
-      expect(resultPh.map((ph) => ph.value)).toContain(75100);
-      expect(resultPh.map((ph) => ph.value)).toContain(75102);
+      // delete some brain parts
+
+      await entityManager.delete(AdniImage, { imageUid: In([1, 2, 3]) });
+      const result2 = await entityManager.find(AdniImage, {});
+      expect(result2.length).toEqual(result1.length - 3);
+      expect(result2.map((ai) => ai.imageUid)).not.toContain(1);
+      expect(result2.map((ai) => ai.imageUid)).not.toContain(2);
+      expect(result2.map((ai) => ai.imageUid)).not.toContain(3);
+      const resultPh2 = await entityManager.find(Phenotype, {});
+      expect(resultPh2.length).toBeLessThan(resultPh1.length);
+
+      // reload
+      await request(app.getHttpServer()).post('/adni-images').send({ path: 'data/test/phenotypes.csv' }).expect(201);
+      const result3 = await entityManager.find(AdniImage, {});
+      expect(result3.length).toEqual(result1.length);
+      expect(result3.map((ai) => ai.imageUid)).toContain(1);
+      expect(result3.map((ai) => ai.imageUid)).toContain(2);
+      expect(result3.map((ai) => ai.imageUid)).toContain(3);
+
+      const resultPh3 = await entityManager.find(Phenotype, {});
+      expect(resultPh3.length).toEqual(resultPh1.length);
     });
   });
 });

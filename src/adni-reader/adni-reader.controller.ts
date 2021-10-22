@@ -8,30 +8,28 @@ import { join } from 'path';
 @ApiTags('Adni reader')
 @UseInterceptors(ClassSerializerInterceptor)
 export class AdniReaderController {
-    constructor(
-    ) {}
+  constructor() {}
 
-    @Get()
-    @ApiOperation({ summary: 'Get phenotypes' })
-    async readCsv(@Query() optionsDto: OptionsInDto): Promise<File> {
-        const csvParser = require('csv-parser');
-        console.log(__dirname)
-        let dirname = __dirname;
-        const distIdx = dirname.indexOf('/dist'); 
-        if(distIdx > 0) {
-            dirname = dirname.substring(distIdx, -1);
-        }
-        console.log(dirname)
-        const stream = fs.createReadStream(join(dirname,'data','test','patients.csv')).pipe(csvParser())
-        .on('data', (row) => {
-            // console.log(row)
-            // use row data
-        })
-    
-        .on('end', () => {
-            // handle end of CSV
-        })
-    return null;
+  @Get()
+  @ApiOperation({ summary: 'Get phenotypes' })
+  async readCsv(@Query() optionsDto: OptionsInDto): Promise<File> {
+    const csvParser = require('csv-parser');
+    let dirname = __dirname;
+    const distIdx = dirname.indexOf('/dist');
+    if (distIdx > 0) {
+      dirname = dirname.substring(distIdx, -1);
     }
-   
+    const stream = fs
+      .createReadStream(join(dirname, 'data', 'test', 'patients.csv'))
+      .pipe(csvParser())
+      .on('data', (row) => {
+        // console.log(row)
+        // use row data
+      })
+
+      .on('end', () => {
+        // handle end of CSV
+      });
+    return null;
+  }
 }
