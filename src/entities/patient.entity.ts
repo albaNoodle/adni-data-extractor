@@ -1,21 +1,30 @@
-import { Diagnosis } from "../enums/diagnosis.enum";
-import { BaseEntity, Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
-import { PatientVisit } from "./patient-visit.entity";
+import { Diagnosis } from '../enums/diagnosis.enum';
+import { BaseEntity, Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { PatientVisit } from './patient-visit.entity';
 
 @Entity()
 export class Patient extends BaseEntity {
-    @PrimaryGeneratedColumn()
-    id: number;
+  @PrimaryGeneratedColumn()
+  id: number;
 
-    @Column()
-    rid: number;
+  @Column()
+  rid: number;
 
-    @Column()
-    ptid: string;
-  
-    @Column()
-    diagnosis: Diagnosis;
+  @Column()
+  ptid: string;
 
-    @OneToMany(() => PatientVisit, patientVisit => patientVisit.patient)
-    patientVisits: PatientVisit[];
+  @Column()
+  diagnosis: Diagnosis;
+
+  @OneToMany(() => PatientVisit, (patientVisit) => patientVisit.patient)
+  patientVisits: PatientVisit[];
+
+  @Column()
+  gender: number;
+
+  @Column()
+  birthYear: number;
+
+  @Column()
+  birthMonth?: number;
 }

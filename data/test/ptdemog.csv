@@ -1,0 +1,4 @@
+"Phase","ID","RID","SITEID","VISCODE","VISCODE2","USERDATE","USERDATE2","PTSOURCE","PTGENDER","PTDOBMM","PTDOBYY","PTHAND","PTMARRY","PTEDUCAT","PTWORKHS","PTWORK","PTWRECNT","PTNOTRT","PTRTYR","PTHOME","PTOTHOME","PTTLANG","PTPLANG","PTPSPEC","PTCOGBEG","PTMCIBEG","PTADBEG","PTADDX","PTETHCAT","PTRACCAT","update_stamp"
+"ADNI1","18","2","107","sc","sc","2005-08-17","","1","1","4","1931","2","1","16","-4","computer progammer","computer programmer","1","--/--/1989","1","-4","1","1","-4","","","-4","","2","5","2005-08-17 00:00:00.0"
+"ADNI1","20","1","10","f","f","2005-08-18","","1","2","12","1944","-4","1","18","-4","-4","Counselor","-4","-4","1","-4","-4","-4","-4","","","-4","","-4","-4","2005-08-18 00:00:00.0"
+"ADNI1","22","3","107","sc","sc","2005-08-18","","1","1","5","1924","1","1","18","-4","chemical engineer","chemical engineer","1","9/18/1989","3","-4","1","1","-4","","","1999","","2","5","2005-08-18 00:00:00.0"

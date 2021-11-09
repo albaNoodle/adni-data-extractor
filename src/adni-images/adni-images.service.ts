@@ -2,7 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { AdniImage } from '../entities/adni-image.entity';
 import { AdniImagesLoadInDto } from './dto/adni-images.load.in.dto';
 import * as fs from 'fs';
-import { join } from 'path';
 import { AdniImageCreateDto } from './dto/adni-image.create.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { AdniImageRepository } from './adni-image.repository';

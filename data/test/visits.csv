@@ -1,10 +1,10 @@
-RID,Image.ID,PTID,Screen.Diagnosis,Visit,Scan.Date,Sequence,Study.ID,Series.ID
-1,1,011_S_0001,AD,Month 6,3/13/06,MPR; GradWarp; B1 Correction; N3; Scaled,1111,99999
-1,2,011_S_0001,AD,Screening,9/1/05,MPR-R; GradWarp; B1 Correction; N3; Scaled,2222,88888
-1,3,011_S_0001,AD,Month 12,9/12/06,MPR; GradWarp; B1 Correction; N3; Scaled,3333,77777
-2,4,022_S_0002,MCI,Month 12,11/28/06,MPR; GradWarp; B1 Correction; N3; Scaled,4444,66666
-2,5,022_S_0002,MCI,Screening,9/22/05,MPR-R; GradWarp; B1 Correction; N3; Scaled,5555,55555
-2,6,022_S_0002,MCI,Month 6,5/25/06,MPR; GradWarp; B1 Correction; N3; Scaled,6666,44444
-3,7,011_S_0003,NL,Month 6,3/9/06,MPR; GradWarp; B1 Correction; N3; Scaled,7777,33333
-3,8,011_S_0003,NL,Month 12,9/5/06,MPR; GradWarp; B1 Correction; N3; Scaled,8888,22222
-3,9,011_S_0003,NL,Screening,9/2/05,MPR-R; GradWarp; B1 Correction; N3; Scaled,9999,11111
+"RID","Image.ID","PTID","Screen.Diagnosis","Visit","Scan.Date","Sequence","Study.ID","Series.ID"
+"1","1","011_S_0001","AD","Month 6","3/13/06","MPR; GradWarp; B1 Correction; N3; Scaled","1111","99999"
+"1","2","011_S_0001","AD","Screening","9/1/05","MPR-R; GradWarp; B1 Correction; N3; Scaled","2222","88888"
+"1","3","011_S_0001","AD","Month 12","9/12/06","MPR; GradWarp; B1 Correction; N3; Scaled","3333","77777"
+"2","4","022_S_0002","MCI","Month 12","11/28/06","MPR; GradWarp; B1 Correction; N3; Scaled","4444","66666"
+"2","5","022_S_0002","MCI","Screening","9/22/05","MPR-R; GradWarp; B1 Correction; N3; Scaled","5555","55555"
+"2","6","022_S_0002","MCI","Month 6","5/25/06","MPR; GradWarp; B1 Correction; N3; Scaled","6666","44444"
+"3","7","011_S_0003","NL","Month 6","3/9/06","MPR; GradWarp; B1 Correction; N3; Scaled","7777","33333"
+"3","8","011_S_0003","NL","Month 12","9/5/06","MPR; GradWarp; B1 Correction; N3; Scaled","8888","22222"
+"3","9","011_S_0003","NL","Screening","9/2/05","MPR-R; GradWarp; B1 Correction; N3; Scaled","9999","11111"
