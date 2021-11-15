@@ -6,6 +6,7 @@ import { PatientRepository } from './patient.respository';
 import * as fs from 'fs';
 import { PatientCreateDto } from './dto/patient.create.dto';
 import { In } from 'typeorm';
+import { PatientFilterDto } from './dto/patient.filter.dto';
 
 @Injectable()
 export class AdniPatientsService {
@@ -13,6 +14,10 @@ export class AdniPatientsService {
     @InjectRepository(PatientRepository)
     private patientRepository: PatientRepository
   ) {}
+
+  async getPatients(patientFilterDto: PatientFilterDto): Promise<Patient[]> {
+    return this.patientRepository.getPatients(patientFilterDto);
+  }
 
   async loadPatients(patientLoadInDto: PatientLoadInDto): Promise<Patient[]> {
     // this.patientRepository.loadPatients(patientLoadInDto);
