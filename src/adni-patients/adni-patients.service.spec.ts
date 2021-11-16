@@ -15,4 +15,8 @@ describe('AdniPatientsService', () => {
   it('should be defined', () => {
     expect(service).toBeDefined();
   });
+
+  it.todo('create patients');
+
+  it.todo('get patients');
 });

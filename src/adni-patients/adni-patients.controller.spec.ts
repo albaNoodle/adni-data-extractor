@@ -15,4 +15,8 @@ describe('AdniPatientsController', () => {
   it('should be defined', () => {
     expect(controller).toBeDefined();
   });
+
+  it.todo('GET patients');
+
+  it.todo('POST patients');
 });
