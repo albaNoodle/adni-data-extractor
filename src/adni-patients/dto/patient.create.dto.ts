@@ -12,6 +12,10 @@ export class PatientCreateDto {
   ptid: string;
 
   @IsNotEmpty()
+  @IsString()
+  phase: string;
+
+  @IsNotEmpty()
   @IsEnum(Diagnosis)
   diagnosis: Diagnosis;
 

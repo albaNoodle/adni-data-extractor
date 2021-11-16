@@ -45,6 +45,7 @@ export class initial1626915455223 implements MigrationInterface {
               `id` int NOT NULL AUTO_INCREMENT, \
               `ptid` varchar(14) NOT NULL, \
               `rid` varchar(14) NOT NULL, \
+              `phase` varchar(14) NOT NULL, \
               `gender` int NOT NULL, \
               `birthYear` int NOT NULL, \
               `birthMonth` int NOT NULL, \

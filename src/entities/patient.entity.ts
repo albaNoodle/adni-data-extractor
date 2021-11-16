@@ -14,6 +14,9 @@ export class Patient extends BaseEntity {
   ptid: string;
 
   @Column()
+  phase: string;
+
+  @Column()
   diagnosis: Diagnosis;
 
   @OneToMany(() => PatientVisit, (patientVisit) => patientVisit.patient)

@@ -6,6 +6,7 @@ import { BrainPartCreateDto } from './dto/brain-part.create.dto';
 import { In } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { BrainPartRepository } from './brain-part.repository';
+import { BrainPartFilterDto } from './dto/brain-part.filter.dto';
 
 @Injectable()
 export class AdniDictionaryService {
@@ -50,8 +51,12 @@ export class AdniDictionaryService {
 
     // Get images imageUid that are already on the database
     const adniBrainPartsExisting = await this.brainPartRepository.find({ where: { keyname: In(brainPartsKeynames) } });
-    const adniBrainPartsToCreate = adniBrainPartsToProcess.filter((x) => !adniBrainPartsExisting.map((ai) => ai.keyname).includes(x.keyname));
-    const adniBrainPartsToUpdate = adniBrainPartsToProcess.filter((x) => adniBrainPartsExisting.map((ai) => ai.keyname).includes(x.keyname));
+    const adniBrainPartsToCreate = adniBrainPartsToProcess.filter(
+      (x) => !adniBrainPartsExisting.map((ai) => `${ai.keyname}-${ai.dictionary}`).includes(`${x.keyname}-${x.dictionary}`)
+    );
+    const adniBrainPartsToUpdate = adniBrainPartsToProcess.filter((x) =>
+      adniBrainPartsExisting.map((ai) => `${ai.keyname}-${ai.dictionary}`).includes(`${x.keyname}-${x.dictionary}`)
+    );
     const imagesCreated = await Promise.all(
       adniBrainPartsToCreate.map(async (createAdniImage) => {
         const image = await this.brainPartRepository.createBrainPart(createAdniImage);
@@ -67,5 +72,9 @@ export class AdniDictionaryService {
     );
 
     return null;
+  }
+
+  async getBrainParts(brainPartFilerDto: BrainPartFilterDto ): Promise<BrainPart[]> {
+    return this.brainPartRepository.getBrainParts(brainPartFilerDto);
   }
 }

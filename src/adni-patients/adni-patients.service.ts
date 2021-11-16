@@ -66,6 +66,7 @@ export class AdniPatientsService {
     for await (const row of streamDemog) {
       const createPatient: Partial<PatientCreateDto> = {
         rid: row['RID'],
+        phase: row['Phase'],
         gender: row['PTGENDER'],
         birthMonth: row['PTDOBMM'],
         birthYear: row['PTDOBYY'],
@@ -77,6 +78,7 @@ export class AdniPatientsService {
       patientsToProcess.push({
         rid: createPatient.rid,
         ptid: patientPartial.ptid,
+        phase: createPatient.phase,
         diagnosis: patientPartial.diagnosis,
         gender: createPatient.gender,
         birthMonth: createPatient.birthMonth,

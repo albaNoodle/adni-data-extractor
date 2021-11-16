@@ -8,10 +8,11 @@ import { PatientFilterDto } from './dto/patient.filter.dto';
 @EntityRepository(Patient)
 export class PatientRepository extends Repository<Patient> {
   async createPatient(patientCreateDto: PatientCreateDto): Promise<Patient> {
-    const { rid, ptid, diagnosis, gender, birthMonth, birthYear } = patientCreateDto;
+    const { rid, ptid, phase, diagnosis, gender, birthMonth, birthYear } = patientCreateDto;
     const patient = this.create();
     patient.rid = rid;
     patient.ptid = ptid;
+    patient.phase = phase;
     patient.diagnosis = diagnosis;
     patient.gender = gender;
     patient.birthYear = birthYear;
@@ -27,8 +28,7 @@ export class PatientRepository extends Repository<Patient> {
   }
 
   async getPatients(patientFilterDto: PatientFilterDto): Promise<Patient[]> {
-    const { fromYearBirth, toYearBirth, gender, diagnoses } = patientFilterDto;
-    console.log(diagnoses);
+    const { fromYearBirth, toYearBirth, gender, diagnoses, phase } = patientFilterDto;
     let query = this.createQueryBuilder('p');
 
     const orderCondition: OrderByCondition = {};
@@ -48,6 +48,10 @@ export class PatientRepository extends Repository<Patient> {
 
     if (gender) {
       query.andWhere(`p.gender = :gender`, { gender });
+    }
+
+    if (phase) {
+      query.andWhere(`p.phase = :phase`, { phase });
     }
 
     // use default order?

@@ -23,7 +23,7 @@ export class AdniPatientsController {
   @Get()
   @UseInterceptors(ClassSerializerInterceptor)
   @ApiOperation({ summary: 'Generates ADNI patients on database from a .csv file' })
-  async getAdniPatients(@Query() adniPatientFilerDto: PatientFilterDto): Promise<Patient[]> {
-    return this.adniPatientsService.getPatients(adniPatientFilerDto);
+  async getAdniPatients(@Query() adniPatientFilterDto: PatientFilterDto): Promise<Patient[]> {
+    return this.adniPatientsService.getPatients(adniPatientFilterDto);
   }
 }

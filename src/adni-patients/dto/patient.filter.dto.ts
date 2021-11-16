@@ -12,7 +12,7 @@ export class PatientFilterDto {
     example: [Diagnosis.AD, Diagnosis.MCI],
     description: 'Patients with any of these diagnoses',
   })
-  diagnoses: Diagnosis[];
+  diagnoses?: Diagnosis[];
 
   @IsOptional()
   @IsNumber()
@@ -54,5 +54,5 @@ export class PatientFilterDto {
     example: 'ADNI1',
     description: 'On which adni phase',
   })
-  adniVersion?: string;
+  phase?: string;
 }
