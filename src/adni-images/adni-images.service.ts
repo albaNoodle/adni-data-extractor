@@ -8,6 +8,7 @@ import { AdniImageRepository } from './adni-image.repository';
 import { PhenotypeRepository } from './phenotype.repository';
 import { PhenotypeCreateDto } from './dto/phenotype.create.dto';
 import { In } from 'typeorm';
+import { AdniImagesFilterDto } from './dto/adni-images.filter.dto';
 
 const NOT_FENOTYPE_FIELDS = [
   'COLPROT',
@@ -127,4 +128,9 @@ export class AdniImagesService {
 
     return null;
   }
+
+  async getAdniImages(adniImagesFilterDto: AdniImagesFilterDto): Promise<AdniImage[]> {
+    return this.adniImageRepository.getAdniImages(adniImagesFilterDto);
+  }
+
 }
