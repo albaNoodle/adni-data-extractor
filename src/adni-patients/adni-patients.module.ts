@@ -8,5 +8,6 @@ import { AdniPatientsService } from './adni-patients.service';
   imports: [TypeOrmModule.forFeature([PatientRepository])],
   controllers: [AdniPatientsController],
   providers: [AdniPatientsService],
+  exports: [AdniPatientsService],
 })
 export class PatientsModule {}

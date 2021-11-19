@@ -7,6 +7,7 @@ import { BrainPartRepository } from './brain-part.repository';
 @Module({
   imports: [TypeOrmModule.forFeature([BrainPartRepository])],
   controllers: [AdniDictionaryController],
-  providers: [AdniDictionaryService]
+  providers: [AdniDictionaryService],
+  exports: [AdniDictionaryService]
 })
 export class AdniDictionaryModule {}

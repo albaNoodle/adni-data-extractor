@@ -1,14 +1,19 @@
-import { ClassSerializerInterceptor, Controller, Get, Query, UseInterceptors } from '@nestjs/common';
+import { ClassSerializerInterceptor, Controller, Get, Inject, Post, Query, UseInterceptors } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { OptionsInDto } from '../dtos/options.in.dto';
 import * as fs from 'fs';
 import { join } from 'path';
+import { AdniImagesFilterDto } from 'src/adni-images/dto/adni-images.filter.dto';
+import { AdniReaderService } from './adni-reader.service';
 
 @Controller('adni-reader')
 @ApiTags('Adni reader')
 @UseInterceptors(ClassSerializerInterceptor)
 export class AdniReaderController {
-  constructor() {}
+  constructor(
+    @Inject(AdniReaderService)
+    private adniReaderService: AdniReaderService
+  ) {}
 
   @Get()
   @ApiOperation({ summary: 'Get phenotypes' })
@@ -31,5 +36,11 @@ export class AdniReaderController {
         // handle end of CSV
       });
     return null;
+  }
+
+  @Post()
+  @ApiOperation({ summary: 'Get phenotypes' })
+  async getPhenotypesCsv(@Query() adniImagesFilterDto: AdniImagesFilterDto): Promise<File> {
+    this.adniReaderService.getPhenotypesCsv(adniImagesFilterDto);
   }
 }

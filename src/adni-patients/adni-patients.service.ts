@@ -19,6 +19,14 @@ export class AdniPatientsService {
     return this.patientRepository.getPatients(patientFilterDto);
   }
 
+  async getPatientsByPtids(patientsPtids: string[]): Promise<Patient[]> {
+    return this.patientRepository.find({
+      where: {
+        ptid: In(patientsPtids),
+      },
+    });
+  }
+
   async loadPatients(patientLoadInDto: PatientLoadInDto): Promise<Patient[]> {
     // this.patientRepository.loadPatients(patientLoadInDto);
     const patients: Promise<Patient>[] = [];

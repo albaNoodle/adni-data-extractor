@@ -8,6 +8,7 @@ import { PhenotypeRepository } from './phenotype.repository';
 @Module({
   imports: [TypeOrmModule.forFeature([AdniImageRepository, PhenotypeRepository])],
   controllers: [AdniImagesController],
-  providers: [AdniImagesService]
+  providers: [AdniImagesService],
+  exports: [AdniImagesService],
 })
 export class AdniImagesModule {}
