@@ -41,6 +41,6 @@ export class AdniReaderController {
   @Post()
   @ApiOperation({ summary: 'Get phenotypes' })
   async getPhenotypesCsv(@Query() adniImagesFilterDto: AdniImagesFilterDto): Promise<File> {
-    this.adniReaderService.getPhenotypesCsv(adniImagesFilterDto);
+    return this.adniReaderService.getPhenotypesCsv(adniImagesFilterDto);
   }
 }

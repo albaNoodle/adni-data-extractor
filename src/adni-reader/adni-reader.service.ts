@@ -4,9 +4,16 @@ import { AdniImagesFilterDto } from 'src/adni-images/dto/adni-images.filter.dto'
 import { AdniPatientsService } from 'src/adni-patients/adni-patients.service';
 import { AdniImage } from 'src/entities/adni-image.entity';
 import { Patient } from 'src/entities/patient.entity';
+import * as fs from 'fs';
+import { Diagnosis } from 'src/enums/diagnosis.enum';
 
-export class writableImageRow {
-
+export class ExportEntry {
+  imageUid: number;
+  ptid: string;
+  diagnosis: Diagnosis;
+  visCode: string;
+  examDate: Date;
+  phenotypes: Map<string, number>; // Phenotype label, value
 }
 
 @Injectable()
@@ -27,13 +34,80 @@ export class AdniReaderService {
     return this.generateAdniCsv(adniImages, patients, phenotypes);
   }
 
-  private generateAdniCsv(adniImages: AdniImage[], adniPatients: Patient[], phenotypeLabels: string[]): Promise<File> {
-    this.writeHeader(phenotypeLabels);
+  private getExportEntries(adniImages: AdniImage[], adniPatients: Patient[], phenotypeLabels: string[]): ExportEntry[] {
+    const exportEntries = [];
+    adniImages.map((image) => {
+      const patient = adniPatients.find((p) => p.rid === image.rid);
+      if (!patient) {
+        throw new Error(`No patient with rid '${image.rid}' associated to image '${image.imageUid}'`);
+      }
+      const exportEntry: ExportEntry = {
+        imageUid: image.imageUid,
+        ptid: patient.ptid,
+        diagnosis: patient.diagnosis,
+        visCode: image.visCode,
+        examDate: image.examDate,
+        phenotypes: new Map<string, number>(),
+      };
+      // const phenotypes = new Map<string, number>();
+      phenotypeLabels.map((ph) => {
+        const phenotype = image.phenotypes.find((iph) => iph.brainPartKeyname === ph);
+        if (!phenotype) {
+          return exportEntry.phenotypes.set(ph, -1);
+        }
+        return exportEntry.phenotypes.set(ph, phenotype.value);
+      });
+
+      // exportEntry.phenotypes = phenotypes;
+      return exportEntries.push(exportEntry);
+    });
+
+    return exportEntries;
   }
 
-  private writeHeader(phenotypeLabels: string[]) {
-    const header = ["Image.Uid", "PTID","Diagnosis","VISCODE","EXAMDATE"];
-    header.push(...phenotypeLabels)
+  private generateAdniCsv(adniImages: AdniImage[], adniPatients: Patient[], phenotypeLabels: string[]): Promise<File> {
+    const exportEntries = this.getExportEntries(adniImages, adniPatients, phenotypeLabels);
+    let writeStream = fs.createWriteStream('docs/test.csv', { encoding: 'utf8' });
+
+    const header = this.writeHeader(phenotypeLabels);
+
+    // write some data with a utf-8 encoding
+    writeStream.write(header);
+    exportEntries.map((e) => {
+      const entry = [e.imageUid, e.ptid, e.diagnosis, e.visCode, e.examDate.toISOString()];
+      for (let phenoValue of e.phenotypes.values()) {
+        if (phenoValue >= 0) {
+          entry.push(phenoValue);
+        } else {
+          entry.push('');
+        }
+      }
+
+      const writableEntry = entry.join(',') + '\n';
+      writeStream.write(writableEntry);
+    });
+
+    // fs.writeFile('docs/test.txt', content, err => {
+    //   if (err) {
+    //     console.error(err)
+    //     return
+    //   }
+    //   //file written successfully
+    // })
+    writeStream.on('finish', () => {
+      console.log('wrote all data to file');
+    });
+
+    // close the stream
+    writeStream.end();
+    writeStream.close();
+    return null;
+  }
+
+  private writeHeader(phenotypeLabels: string[]): string {
+    const header = ['Image.Uid', 'PTID', 'Diagnosis', 'VISCODE', 'EXAMDATE'];
+    header.push(...phenotypeLabels);
+    return header.join(',') + '\n';
   }
 
   // JSON to CSV Converter
