@@ -26,7 +26,7 @@ export class AdniReaderService {
     private adniPatientsService: AdniPatientsService
   ) {}
 
-  async getPhenotypesCsv(adniImagesFilterDto: AdniImagesFilterDto): Promise<File> {
+  async getPhenotypesCsv(adniImagesFilterDto: AdniImagesFilterDto): Promise<string> {
     const { patientsPtids, phenotypes } = adniImagesFilterDto;
 
     const adniImages = await this.adniImagesService.getAdniImages(adniImagesFilterDto);
@@ -65,9 +65,11 @@ export class AdniReaderService {
     return exportEntries;
   }
 
-  private generateAdniCsv(adniImages: AdniImage[], adniPatients: Patient[], phenotypeLabels: string[]): Promise<File> {
+  private generateAdniCsv(adniImages: AdniImage[], adniPatients: Patient[], phenotypeLabels: string[]): string {
     const exportEntries = this.getExportEntries(adniImages, adniPatients, phenotypeLabels);
-    let writeStream = fs.createWriteStream('docs/test.csv', { encoding: 'utf8' });
+    const path = 'docs/test.csv';
+
+    let writeStream = fs.createWriteStream(path, { encoding: 'utf8' });
 
     const header = this.writeHeader(phenotypeLabels);
 
@@ -101,7 +103,7 @@ export class AdniReaderService {
     // close the stream
     writeStream.end();
     writeStream.close();
-    return null;
+    return path;
   }
 
   private writeHeader(phenotypeLabels: string[]): string {

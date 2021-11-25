@@ -10,9 +10,9 @@
 
 ## After that
 
-Build the new csv from the phenotypes recolected (~25/11):
+Build the new csv from the phenotypes recolected (~25/11): OK
 
-- Endpoint POST that send filter (brain parts, patients, date range, diagnosis) and generates the csv, with the next structure.
+- Endpoint POST that send filter (brain parts, patients, date range, diagnosis) and generates the csv, with the next structure. OK
 
 ### CSV structure
 

@@ -3,3 +3,4 @@ data/fenotypes/*
 data/patients/*
 node_modules
 dist
+docs/test.csv
