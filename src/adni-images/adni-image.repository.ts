@@ -1,5 +1,5 @@
 import { AdniImage } from '../entities/adni-image.entity';
-import { EntityRepository, OrderByCondition, Repository, UpdateResult } from 'typeorm';
+import { EntityRepository, getConnection, OrderByCondition, Repository, UpdateResult } from 'typeorm';
 import { AdniImageCreateDto } from './dto/adni-image.create.dto';
 import { AdniImagesFilterDto } from './dto/adni-images.filter.dto';
 import { Patient } from 'src/entities/patient.entity';
@@ -17,10 +17,37 @@ export class AdniImageRepository extends Repository<AdniImage> {
     return adniImage.save();
   }
 
-  async updateAdniImage(adniImageCreateDto: AdniImageCreateDto): Promise<AdniImage> {
+  // async updateAdniImage(adniImageCreateDto: AdniImageCreateDto): Promise<AdniImage> {
+  //   return this.manager.transaction('SERIALIZABLE', async () => {
+  //     await this.update({ imageUid: adniImageCreateDto.imageUid }, adniImageCreateDto);
+  //     return this.findOne({ imageUid: adniImageCreateDto.imageUid });
+  //   });
+  // }
+
+  async createOrUpdateAdniImages(adniImsageCreateDtos: AdniImageCreateDto[]): Promise<AdniImage[]> {
     return this.manager.transaction('SERIALIZABLE', async () => {
-      await this.update({ imageUid: adniImageCreateDto.imageUid }, adniImageCreateDto);
-      return this.findOne({ imageUid: adniImageCreateDto.imageUid });
+      const images = adniImsageCreateDtos.map((adniImageCreateDto) => {
+        const { imageUid, rid, visCode, examDate } = adniImageCreateDto;
+        const adniImage = this.create();
+        adniImage.imageUid = imageUid;
+        adniImage.rid = rid;
+        adniImage.visCode = visCode;
+        adniImage.examDate = new Date(examDate);
+        return adniImage;
+      });
+
+      await getConnection()
+        .createQueryBuilder()
+        .insert()
+        .into(AdniImage)
+        .values(images)
+        .orUpdate({ conflict_target: ['imageUid'], overwrite: ['rid', 'visCode', 'examDate'] })
+        .updateEntity(false)
+        .execute();
+
+      await Promise.all(images.map(async (p) => await p.reload()));
+
+      return images;
     });
   }
 

@@ -43,17 +43,17 @@ export class initial1626915455223 implements MigrationInterface {
     await queryRunner.query(
       'CREATE TABLE `patient` ( \
               `id` int NOT NULL AUTO_INCREMENT, \
-              `ptid` varchar(14) NOT NULL, \
+              `ptid` varchar(14) NULL, \
               `rid` int NOT NULL, \
               `phase` varchar(14) NOT NULL, \
-              `gender` int NOT NULL, \
-              `birthYear` int NOT NULL, \
-              `birthMonth` int NOT NULL, \
-              `diagnosis` varchar(4) NOT NULL, \
+              `gender` int NULL, \
+              `birthYear` int NULL, \
+              `birthMonth` int NULL, \
+              `diagnosis` varchar(4) NULL, \
               `createdAt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP, \
               `updatedAt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP, \
-              UNIQUE INDEX `IDX_patient_ptid` (`ptid`), \
               UNIQUE INDEX `IDX_patient_rid` (`rid`), \
+              INDEX `IDX_patient_ptid` (`ptid`), \
               INDEX `IDX_patient_diagnosis` (`diagnosis`), \
               PRIMARY KEY (`id`) \
               ) ENGINE=InnoDB'

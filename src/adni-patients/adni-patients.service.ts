@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Patient } from 'src/entities/patient.entity';
 import { PatientLoadInDto } from './dto/patient.load.in.dto';
@@ -14,6 +14,7 @@ export class AdniPatientsService {
     @InjectRepository(PatientRepository)
     private patientRepository: PatientRepository
   ) {}
+  private logger = new Logger('AdniPatientsService');
 
   async getPatients(patientFilterDto: PatientFilterDto): Promise<Patient[]> {
     return this.patientRepository.getPatients(patientFilterDto);
@@ -79,42 +80,26 @@ export class AdniPatientsService {
         birthMonth: row['PTDOBMM'],
         birthYear: row['PTDOBYY'],
       };
+
       const patientPartial = patientsToProcessPartial.find((p) => p.rid === createPatient.rid);
-      if (!patientPartial) {
-        throw new Error(`Patient with RID '${createPatient.rid}' not existing on visits file`);
-      }
+      // if (!patientPartial) {
+      //   this.logger.warn(`Patient with RID '${createPatient.rid}' not existing on visits file`);
+      //   throw new Error(`Patient with RID '${createPatient.rid}' not existing on visits file`);
+      // }
+
       patientsToProcess.push({
         rid: createPatient.rid,
-        ptid: patientPartial.ptid,
+        ptid: patientPartial ? patientPartial.ptid : undefined,
         phase: createPatient.phase,
-        diagnosis: patientPartial.diagnosis,
-        gender: createPatient.gender,
-        birthMonth: createPatient.birthMonth,
-        birthYear: createPatient.birthYear,
+        diagnosis: patientPartial ? patientPartial.diagnosis : undefined,
+        gender: createPatient.gender ? createPatient.gender : undefined,
+        birthMonth: createPatient.birthMonth ? createPatient.birthMonth : undefined,
+        birthYear: createPatient.birthYear ? createPatient.birthYear : undefined,
       });
     }
 
-    // Get patients Rid of the csvs patients
-    const patientsRid = patientsToProcess.map((x) => x.rid);
+    await this.patientRepository.createOrUpdatePatients(patientsToProcess);
 
-    // Get patients Rid that are already on the database
-    const patientsExisting = await this.patientRepository.find({ where: { rid: In(patientsRid) } });
-    const patientsToCreate = patientsToProcess.filter((x) => !patientsExisting.map((p) => p.rid.toString()).includes(x.rid.toString()));
-    const patientsToUpdate = patientsToProcess.filter((x) => patientsExisting.map((p) => p.rid.toString()).includes(x.rid.toString()));
-
-    const patientsCreated = await Promise.all(
-      patientsToCreate.map(async (patientToCreate) => {
-        const patient = await this.patientRepository.createPatient(patientToCreate);
-        return patient;
-      })
-    );
-
-    const patientsUpdated = await Promise.all(
-      patientsToUpdate.map(async (patientToUpdate) => {
-        const patient = await this.patientRepository.updatePatient(patientToUpdate);
-        return patient;
-      })
-    );
 
     return null;
   }

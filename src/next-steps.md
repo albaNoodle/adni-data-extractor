@@ -33,3 +33,9 @@ Simple web with petitions:
 # Documentation
 
 (~13/12)
+
+# DEMOG
+
+Uniqueness on Phase and Rid <- NO, RID unique accrosss `Phase`
+
+Hacer columnas nullables :) and ready! Actualizar solo con valores no nulos, sino pisan los correctos

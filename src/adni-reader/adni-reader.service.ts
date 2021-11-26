@@ -49,7 +49,7 @@ export class AdniReaderService {
         examDate: image.examDate,
         phenotypes: new Map<string, number>(),
       };
-      // const phenotypes = new Map<string, number>();
+
       phenotypeLabels.map((ph) => {
         const phenotype = image.phenotypes.find((iph) => iph.brainPartKeyname === ph);
         if (!phenotype) {

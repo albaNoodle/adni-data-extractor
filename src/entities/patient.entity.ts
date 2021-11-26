@@ -11,22 +11,22 @@ export class Patient extends BaseEntity {
   rid: number;
 
   @Column()
-  ptid: string;
+  ptid?: string;
 
   @Column()
   phase: string;
 
   @Column()
-  diagnosis: Diagnosis;
+  diagnosis?: Diagnosis;
 
   @OneToMany(() => PatientVisit, (patientVisit) => patientVisit.patient)
   patientVisits: PatientVisit[];
 
   @Column()
-  gender: number;
+  gender?: number;
 
   @Column()
-  birthYear: number;
+  birthYear?: number;
 
   @Column()
   birthMonth?: number;

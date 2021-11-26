@@ -1,7 +1,6 @@
-import { Console } from 'console';
 import { Patient } from 'src/entities/patient.entity';
 import { Diagnosis } from 'src/enums/diagnosis.enum';
-import { EntityRepository, OrderByCondition, Repository } from 'typeorm';
+import { EntityRepository, getConnection, OrderByCondition, Repository } from 'typeorm';
 import { PatientCreateDto } from './dto/patient.create.dto';
 import { PatientFilterDto } from './dto/patient.filter.dto';
 
@@ -24,6 +23,96 @@ export class PatientRepository extends Repository<Patient> {
     return this.manager.transaction('SERIALIZABLE', async () => {
       await this.update({ rid: patientCreateDto.rid }, patientCreateDto);
       return this.findOne({ rid: patientCreateDto.rid });
+    });
+  }
+
+  async createOrUpdatePatients(patientCreateDtos: PatientCreateDto[]) {
+    return this.manager.transaction('SERIALIZABLE', async () => {
+      const patients = patientCreateDtos.map((patientCreateDto) => {
+        const { rid, ptid, phase, diagnosis, gender, birthMonth, birthYear } = patientCreateDto;
+        const patient = this.create();
+        patient.rid = rid;
+        if (ptid) {
+          patient.ptid = ptid;
+        }
+        patient.phase = phase;
+        if (diagnosis) {
+          patient.diagnosis = diagnosis;
+        }
+        if (gender) {
+          patient.gender = gender;
+        }
+        if (birthYear) {
+          patient.birthYear = birthYear;
+        }
+        if (birthMonth) {
+          patient.birthMonth = birthMonth;
+        }
+        return patient;
+      });
+
+      // 'ptid'
+      let patientsUpsert = patients.filter((p) => p.ptid);
+      await getConnection()
+        .createQueryBuilder()
+        .insert()
+        .into(Patient)
+        .values(patientsUpsert)
+        .orUpdate({ conflict_target: ['rid', 'phase'], overwrite: ['ptid'] })
+        .updateEntity(false)
+        .execute();
+      // 'diagnosis'
+      patientsUpsert = patients.filter((p) => p.diagnosis);
+      await getConnection()
+        .createQueryBuilder()
+        .insert()
+        .into(Patient)
+        .values(patientsUpsert)
+        .orUpdate({ conflict_target: ['rid', 'phase'], overwrite: ['diagnosis'] })
+        .updateEntity(false)
+        .execute();
+      // 'gender'
+      patientsUpsert = patients.filter((p) => p.gender);
+      await getConnection()
+        .createQueryBuilder()
+        .insert()
+        .into(Patient)
+        .values(patientsUpsert)
+        .orUpdate({ conflict_target: ['rid', 'phase'], overwrite: ['gender'] })
+        .updateEntity(false)
+        .execute();
+      // 'birthYear'
+      patientsUpsert = patients.filter((p) => p.birthYear);
+      await getConnection()
+        .createQueryBuilder()
+        .insert()
+        .into(Patient)
+        .values(patientsUpsert)
+        .orUpdate({ conflict_target: ['rid', 'phase'], overwrite: ['birthYear'] })
+        .updateEntity(false)
+        .execute();
+      // 'birthMonth'
+      patientsUpsert = patients.filter((p) => p.birthMonth);
+      await getConnection()
+        .createQueryBuilder()
+        .insert()
+        .into(Patient)
+        .values(patientsUpsert)
+        .orUpdate({ conflict_target: ['rid', 'phase'], overwrite: ['birthMonth'] })
+        .updateEntity(false)
+        .execute();
+
+      // await getConnection()
+      //   .createQueryBuilder()
+      //   .insert()
+      //   .into(Patient)
+      //   .values(patients)
+      //   .orUpdate({ conflict_target: ['rid', 'phase'], overwrite: ['ptid', 'diagnosis', 'gender', 'birthYear', 'birthMonth'] })
+      //   .updateEntity(false)
+      //   .execute();
+      // await Promise.all(phenotipes.map(async (p) => await p.reload()));
+
+      return patients;
     });
   }
 
