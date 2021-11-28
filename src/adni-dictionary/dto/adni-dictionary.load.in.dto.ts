@@ -5,7 +5,7 @@ export class AdniDictionaryLoadInDto {
   @IsNotEmpty()
   @IsString()
   @ApiProperty({
-    example: 'data/test/dictionary.csv',
+    example: 'data/adni/UCSFFSX51_ADNI1_3T_DICT_11_01_13.csv',
     description: 'path to the dictionary csv file',
   })
   path: string;

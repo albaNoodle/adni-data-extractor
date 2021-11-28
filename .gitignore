@@ -3,5 +3,5 @@ data/fenotypes/*
 data/patients/*
 data/adni/*
 node_modules
-dist
+dist/*
 docs/test.csv

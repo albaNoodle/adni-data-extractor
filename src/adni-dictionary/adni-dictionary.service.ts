@@ -8,6 +8,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { BrainPartRepository } from './brain-part.repository';
 import { BrainPartFilterDto } from './dto/brain-part.filter.dto';
 
+const MAX_LENGTH = 256;
+
 @Injectable()
 export class AdniDictionaryService {
   constructor(
@@ -40,41 +42,27 @@ export class AdniDictionaryService {
     for await (const row of stream) {
       const createAdniImage: BrainPartCreateDto = {
         keyname: row['FLDNAME'],
-        humanName: row['TEXT'],
+        humanName: this.proccessHumanName(row['TEXT']),
         dictionary: row['TBLNAME'],
       };
       adniBrainPartsToProcess.push(createAdniImage);
     }
 
-    // Get images imageUid of the csv images
-    const brainPartsKeynames = adniBrainPartsToProcess.map((x) => x.keyname);
-
-    // Get images imageUid that are already on the database
-    const adniBrainPartsExisting = await this.brainPartRepository.find({ where: { keyname: In(brainPartsKeynames) } });
-    const adniBrainPartsToCreate = adniBrainPartsToProcess.filter(
-      (x) => !adniBrainPartsExisting.map((ai) => `${ai.keyname}-${ai.dictionary}`).includes(`${x.keyname}-${x.dictionary}`)
-    );
-    const adniBrainPartsToUpdate = adniBrainPartsToProcess.filter((x) =>
-      adniBrainPartsExisting.map((ai) => `${ai.keyname}-${ai.dictionary}`).includes(`${x.keyname}-${x.dictionary}`)
-    );
-    const imagesCreated = await Promise.all(
-      adniBrainPartsToCreate.map(async (createAdniImage) => {
-        const image = await this.brainPartRepository.createBrainPart(createAdniImage);
-        return image;
-      })
-    );
-
-    const imagesUpdated = await Promise.all(
-      adniBrainPartsToUpdate.map(async (updateAdniImage) => {
-        const image = await this.brainPartRepository.updateBrainPart(updateAdniImage);
-        return image;
-      })
-    );
+    await this.brainPartRepository.createOrUpdatePhenotypes(adniBrainPartsToProcess);
 
     return null;
   }
 
-  async getBrainParts(brainPartFilerDto: BrainPartFilterDto ): Promise<BrainPart[]> {
+  async getBrainParts(brainPartFilerDto: BrainPartFilterDto): Promise<BrainPart[]> {
     return this.brainPartRepository.getBrainParts(brainPartFilerDto);
+  }
+
+  // ------ Utils -------
+
+  // Process human name to avoid atring values longer than allowed on database
+  private proccessHumanName(humanName: string): string {
+    let finalName = humanName.length <= MAX_LENGTH ? humanName : humanName.split('.')[0];
+    finalName = finalName.length <= MAX_LENGTH ? finalName : finalName.substring(0, MAX_LENGTH - 1);
+    return finalName;
   }
 }

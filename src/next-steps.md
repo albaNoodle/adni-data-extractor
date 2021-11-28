@@ -17,7 +17,7 @@ Build the new csv from the phenotypes recolected (~25/11): OK
 ### CSV structure
 
 AND
-download the file (~25/11)
+download the file (~25/11) OK
 
 ## Finally web
 

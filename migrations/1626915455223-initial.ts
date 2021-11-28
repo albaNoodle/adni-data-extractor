@@ -85,10 +85,10 @@ export class initial1626915455223 implements MigrationInterface {
               `createdAt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP, \
               `updatedAt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP, \
               UNIQUE INDEX `IDX_brain_part_keyname_dict` (`keyname`,`dictionary`), \
-              INDEX `IDX_brain_part_dictionary` (`dictionary`), \
               PRIMARY KEY (`id`) \
               ) ENGINE=InnoDB'
     );
+    // INDEX `IDX_brain_part_dictionary` (`dictionary`), \
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {

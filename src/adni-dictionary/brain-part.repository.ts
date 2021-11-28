@@ -1,5 +1,5 @@
 import { BrainPart } from '../entities/brain-part.entity';
-import { EntityRepository, Repository } from 'typeorm';
+import { EntityRepository, getConnection, Repository } from 'typeorm';
 import { BrainPartCreateDto } from './dto/brain-part.create.dto';
 import { BrainPartFilterDto } from './dto/brain-part.filter.dto';
 
@@ -18,6 +18,30 @@ export class BrainPartRepository extends Repository<BrainPart> {
     return this.manager.transaction('SERIALIZABLE', async () => {
       await this.update({ keyname: adniBrainPartCreateDto.keyname, dictionary: adniBrainPartCreateDto.dictionary }, adniBrainPartCreateDto);
       return this.findOne({ keyname: adniBrainPartCreateDto.keyname, dictionary: adniBrainPartCreateDto.dictionary });
+    });
+  }
+
+  async createOrUpdatePhenotypes(adniBrainPartCreateDtos: BrainPartCreateDto[]): Promise<BrainPart[]> {
+    return this.manager.transaction('SERIALIZABLE', async () => {
+      const brainParts = adniBrainPartCreateDtos.map((brainPartCreateDto) => {
+        const { keyname, humanName, dictionary } = brainPartCreateDto;
+        const brainPart = this.create();
+        brainPart.keyname = keyname;
+        brainPart.humanName = humanName;
+        brainPart.dictionary = dictionary;
+        return brainPart;
+      });
+
+      await getConnection()
+        .createQueryBuilder()
+        .insert()
+        .into(BrainPart)
+        .values(brainParts)
+        .orUpdate({ conflict_target: ['keyname', 'dictionary'], overwrite: ['humanName'] })
+        .updateEntity(false)
+        .execute();
+
+      return brainParts;
     });
   }
 
