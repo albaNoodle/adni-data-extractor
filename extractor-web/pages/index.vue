@@ -5,10 +5,10 @@
       <h1 class="title"> ADNI data extractor </h1>
       <h2 class="subtitle"> Nuxt.js project </h2>
       <div class="links">
-        <a href="/dictionaries" target="_blank" class="button--grey">Upload Dictionaries</a>
-        <a href="/patients" target="_blank" class="button--grey">Upload Patients</a>
-        <a href="/images" target="_blank" class="button--grey">Upload Images</a>
-        <a href="/extractor" target="_blank" class="button--green">Extract Data</a>
+        <a href="/dictionaries" class="button--grey">Upload Dictionaries</a>
+        <a href="/patients" class="button--grey">Upload Patients</a>
+        <a href="/images" class="button--grey">Upload Images</a>
+        <a href="/extractor" class="button--green">Extract Data</a>
       </div>
     </div>
   </section>
