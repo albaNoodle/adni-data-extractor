@@ -1,14 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { BrainPart } from 'src/entities/brain-part.entity';
 import * as fs from 'fs';
-import { join } from 'path';
 import { BrainPartCreateDto } from './dto/brain-part.create.dto';
-import { In } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { BrainPartRepository } from './brain-part.repository';
 import { BrainPartFilterDto } from './dto/brain-part.filter.dto';
 
 const MAX_LENGTH = 256;
+const MAX_LENGTH_KEYNAME = 64;
 
 @Injectable()
 export class AdniDictionaryService {
@@ -41,7 +40,7 @@ export class AdniDictionaryService {
 
     for await (const row of stream) {
       const createAdniImage: BrainPartCreateDto = {
-        keyname: row['FLDNAME'],
+        keyname: this.proccessKeyname(row['FLDNAME']),
         humanName: this.proccessHumanName(row['TEXT']),
         dictionary: row['TBLNAME'],
       };
@@ -64,5 +63,10 @@ export class AdniDictionaryService {
     let finalName = humanName.length <= MAX_LENGTH ? humanName : humanName.split('.')[0];
     finalName = finalName.length <= MAX_LENGTH ? finalName : finalName.substring(0, MAX_LENGTH - 1);
     return finalName;
+  }
+
+  // Process human name to avoid atring values longer than allowed on database
+  private proccessKeyname(keyname: string): string {
+    return keyname.substring(0, MAX_LENGTH_KEYNAME - 1);
   }
 }

@@ -5,7 +5,7 @@ import * as path from 'path';
 import * as tmp from 'tmp';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
 
-export const AdniFilesInterceptor = (fileKeys: string[] = ['files'], maxNumber?: number): Type<NestInterceptor> => {
+export const AdniFilesInterceptor = (fileKeys: string[] = ['files']): Type<NestInterceptor> => {
   const storage = diskStorage({
     destination: getTempDirPath(),
     filename: (req, file, cb) => {

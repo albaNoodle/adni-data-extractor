@@ -79,7 +79,7 @@ export class initial1626915455223 implements MigrationInterface {
     await queryRunner.query(
       'CREATE TABLE `brain_part` ( \
               `id` int NOT NULL AUTO_INCREMENT, \
-              `keyname` varchar(14) NOT NULL, \
+              `keyname` varchar(64) NOT NULL, \
               `humanName` varchar(256) NOT NULL, \
               `dictionary` varchar(128) NOT NULL, \
               `createdAt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP, \
