@@ -5,7 +5,7 @@ import * as path from 'path';
 import { FileInterceptor } from '@nestjs/platform-express/multer';
 import * as tmp from 'tmp';
 
-export const AvatarFileInterceptor = (fileKey: string = 'file'): Type<NestInterceptor> => {
+export const AdniFileInterceptor = (fileKey: string = 'file'): Type<NestInterceptor> => {
   const storage = diskStorage({
     destination: getTempDirPath(),
     filename: (req, file, cb) => {
@@ -16,7 +16,7 @@ export const AvatarFileInterceptor = (fileKey: string = 'file'): Type<NestInterc
       cb(null, `~${filename}${extension}`);
     },
   });
-  return FileInterceptor(fileKey, { storage: storage, limits: { files: 1 } });
+  return FileInterceptor(fileKey, { storage: storage }); //, limits: { files: 1 } });
 };
 
 let tempFilderObj;

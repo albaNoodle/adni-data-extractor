@@ -1,5 +1,6 @@
-import { Body, ClassSerializerInterceptor, Controller, Get, Inject, Post, Query, UseInterceptors } from '@nestjs/common';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { Body, ClassSerializerInterceptor, Controller, Get, Inject, Post, Query, UploadedFiles, UseInterceptors } from '@nestjs/common';
+import { ApiConsumes, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { AdniFilesInterceptor } from '../interceptors/adni-files.interceptor';
 import { Patient } from '../entities/patient.entity';
 import { AdniPatientsService } from './adni-patients.service';
 import { PatientFilterDto } from './dto/patient.filter.dto';
@@ -14,9 +15,19 @@ export class AdniPatientsController {
     private adniPatientsService: AdniPatientsService
   ) {}
 
-  @Post()
+  @Post('/path')
   @ApiOperation({ summary: 'Generates ADNI patients on database from a .csv file' })
   async loadAdniImages(@Body() adniPatientsLoadInDto: PatientLoadInDto): Promise<Patient[]> {
+    return this.adniPatientsService.loadPatients(adniPatientsLoadInDto);
+  }
+
+  @Post()
+  @ApiConsumes('multipart/form-data', 'application/json')
+  @UseInterceptors(AdniFilesInterceptor(['fileVisits', 'fileDemog']))
+  @ApiOperation({ summary: 'Generates ADNI images on database from a .csv file' })
+  async loadCsvPatients(@UploadedFiles() files: { fileVisits: Express.Multer.File; fileDemog: Express.Multer.File }): Promise<Patient[]> {
+    const { fileVisits, fileDemog } = files;
+    const adniPatientsLoadInDto: PatientLoadInDto = { demogPath: fileDemog[0].path, visitsPath: fileVisits[0].path };
     return this.adniPatientsService.loadPatients(adniPatientsLoadInDto);
   }
 

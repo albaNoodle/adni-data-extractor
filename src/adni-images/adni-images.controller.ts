@@ -2,7 +2,7 @@ import { Body, ClassSerializerInterceptor, Controller, Get, Inject, Post, Query,
 import { ApiConsumes, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { AdniImage } from '../entities/adni-image.entity';
 import { AdniImagesService } from './adni-images.service';
-import { AvatarFileInterceptor } from './avatar-file.interceptor';
+import { AdniFileInterceptor } from '../interceptors/adni-file.interceptor';
 import { AdniImagesFilterDto } from './dto/adni-images.filter.dto';
 import { AdniImagesLoadInDto } from './dto/adni-images.load.in.dto';
 
@@ -23,7 +23,7 @@ export class AdniImagesController {
 
   @Post()
   @ApiConsumes('multipart/form-data', 'application/json')
-  @UseInterceptors(AvatarFileInterceptor('file'))
+  @UseInterceptors(AdniFileInterceptor('file'))
   @ApiOperation({ summary: 'Generates ADNI images on database from a .csv file' })
   async loadCsvAdniImages(@UploadedFile('file') file): Promise<AdniImage[]> {
     const adniImagesLoadInDto: AdniImagesLoadInDto = { path: file.path };

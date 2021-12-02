@@ -9,11 +9,12 @@ const mutations = {
 }
 
 const actions = {
-  async uploadImages({ commit }, { file }) {
+  async uploadPatients({ commit }, { fileDemog, fileVisits }) {
     try {
       const formData = new FormData()
-      formData.append('file', file)
-      const user = await this.$axios.$post('/api/adni-images', formData, {
+      formData.append('fileVisits', fileVisits)
+      formData.append('fileDemog', fileDemog)
+      await this.$axios.$post('/api/adni-patients', formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
       })
     } catch (error) {
