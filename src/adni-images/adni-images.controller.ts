@@ -32,7 +32,7 @@ export class AdniImagesController {
 
   @Get()
   @ApiOperation({ summary: 'Generates ADNI images on database from a .csv file' })
-  async lgetAdniImages(@Query() adniImagesFilterDto: AdniImagesFilterDto): Promise<AdniImage[]> {
+  async getAdniImages(@Query() adniImagesFilterDto: AdniImagesFilterDto): Promise<AdniImage[]> {
     return this.adniImagesService.getAdniImages(adniImagesFilterDto);
   }
 }

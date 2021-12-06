@@ -1,5 +1,5 @@
 <template>
-  <section class="container">
+  <section class="home-container">
     <div>
       <app-logo />
       <h1 class="title"> ADNI data extractor </h1>
@@ -23,7 +23,7 @@ export default {
 </script>
 
 <style>
-.container {
+.home-container {
   min-height: 100vh;
   display: flex;
   justify-content: center;

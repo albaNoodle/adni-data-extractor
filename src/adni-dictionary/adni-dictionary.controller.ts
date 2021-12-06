@@ -31,7 +31,7 @@ export class AdniDictionaryController {
   }
 
   @Get()
-  @ApiOperation({ summary: 'Get a listr of available brain parts for getting their volumes' })
+  @ApiOperation({ summary: 'Get a list of available brain parts for getting their volumes' })
   async getBrainParts(@Query() brainPartFilerDto: BrainPartFilterDto): Promise<BrainPart[]> {
     return this.adniDictionaryService.getBrainParts(brainPartFilerDto);
   }

@@ -1,68 +1,54 @@
 <template>
   <div>
-    EXTRACTOR
-
-    <h4>Patients</h4>
-    <div>
-      <v-card elevation="16" max-width="400" class="mx-auto">
-        <v-checkbox v-model="allSelected" @click="selectAll" :label="`Select All`" />
-      </v-card>
-
-      <v-card elevation="16" max-width="400" class="mx-auto">
-        <v-virtual-scroll :items="patients" height="300" item-height="64">
-          <template v-slot:default="{ item }">
-            <v-list-item>
-              <v-list-item-content>
-                <v-checkbox v-model="patientPtids" @click="select" :value="item.ptid" :label="`${item.rid}  - ${item.ptid}`" />
-              </v-list-item-content>
-            </v-list-item>
-          </template>
-        </v-virtual-scroll>
-      </v-card>
-    </div>
-
-    <span>Selected Ids: {{ patientPtids }}</span>
+    <v-container class="grey lighten-5">
+      <v-row no-gutters justify="center">
+        <v-col md="4">
+          <v-card class="pa-2" outlined tile>
+            <!-- <v-card class="d-flex justify-space-between mb-6" :color="$vuetify.theme.dark ? 'grey darken-3' : 'grey lighten-4'" flat tile> -->
+            <patients-selector @selectPatients="selectPatients" />
+            <!-- <v-card outlined tile> -->
+          </v-card>
+        </v-col>
+        <v-col md="4">
+          <v-card class="pa-2" outlined tile>
+            <brain-parts-selector @selectBrainParts="selectBrainParts" />
+          </v-card>
+        </v-col>
+        <!-- </v-card> -->
+      </v-row>
+    </v-container>
   </div>
 </template>
 
 <script>
-import { mapActions, mapState } from 'vuex';
+import PatientsSelector from '~/components/PatientsSelector.vue';
+import BrainPartsSelector from '~/components/BrainPartsSelector.vue';
+// import { mapActions, mapState } from 'vuex';
 
 export default {
+  components: {
+    PatientsSelector,
+    BrainPartsSelector,
+  },
+
   data() {
     return {
-      // patients: [],
-      selected: [],
-      allSelected: false,
-      patientPtids: [],
-      checked: false,
+      selectedPatients: [],
+      selectedBrainParts: [],
     };
   },
-  computed: {
-    ...mapState('patients', ['patients']),
-  },
 
-  async fetch() {
-    await Promise.all([this.getPatients({ rid: -1 })]);
-  },
+  // computed: {
+  //   ...mapState('dictionaries', ['brainParts']),
+  // },
 
   methods: {
-    ...mapActions('patients', ['getPatients']),
-    async loadData() {
-      await Promise.all([this.getPatients({ rid: -1 })]);
+    // ...mapActions('dictionaries', ['getBrainParts']),
+    async selectPatients(value) {
+      this.selectedPatients = value;
     },
-    selectAll() {
-      this.patientPtids = [];
-
-      if (this.allSelected) {
-        //value before updates
-        for (let id in this.patients) {
-          this.patientPtids.push(this.patients[id].ptid);
-        }
-      }
-    },
-    select() {
-      this.allSelected = false;
+    async selectBrainParts(value) {
+      this.selectedBrainParts = value;
     },
   },
 };

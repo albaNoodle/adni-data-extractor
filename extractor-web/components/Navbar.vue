@@ -50,6 +50,7 @@ export default {
   transition: left 0.35s;
 }
 .isOpen {
+  z-index: 1;
   left: 0;
 }
 span,
