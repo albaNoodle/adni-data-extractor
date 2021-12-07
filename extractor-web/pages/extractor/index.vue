@@ -4,9 +4,7 @@
       <v-row no-gutters justify="center">
         <v-col md="4">
           <v-card class="pa-2" outlined tile>
-            <!-- <v-card class="d-flex justify-space-between mb-6" :color="$vuetify.theme.dark ? 'grey darken-3' : 'grey lighten-4'" flat tile> -->
             <patients-selector @selectPatients="selectPatients" />
-            <!-- <v-card outlined tile> -->
           </v-card>
         </v-col>
         <v-col md="4">
@@ -14,9 +12,10 @@
             <brain-parts-selector @selectBrainParts="selectBrainParts" />
           </v-card>
         </v-col>
-        <!-- </v-card> -->
       </v-row>
     </v-container>
+    <!-- {{ selectedPatients }}
+    {{ selectedBrainParts }} -->
   </div>
 </template>
 

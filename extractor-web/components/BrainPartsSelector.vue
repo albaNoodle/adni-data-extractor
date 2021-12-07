@@ -24,7 +24,7 @@
       </v-card>
     </div>
 
-    <button class="button--grey" @click="emitToParent">Select barin parts</button>
+    <!-- <button class="button--grey" @click="emitToParent">Select barin parts</button> -->
   </div>
 </template>
 
@@ -55,12 +55,15 @@ export default {
       if (this.allSelected) {
         //value before updates
         for (let id in this.brainParts) {
-          this.brainPartsKeynames.push(this.brainParts[id].keyname);
+          this.brainPartsKeynames.push(this.brainParts[id].bp_keyname);
         }
       }
+
+      this.emitToParent()
     },
     select() {
       this.allSelected = false;
+      this.emitToParent()
     },
     emitToParent(event) {
       this.$emit('selectBrainParts', this.brainPartsKeynames);

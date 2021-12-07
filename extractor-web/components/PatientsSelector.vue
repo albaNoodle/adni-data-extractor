@@ -19,9 +19,7 @@
       </v-card>
     </div>
 
-    <button class="button--grey" @click="emitToParent">Upload Patients</button>
-
-    <!-- <span>Selected Ids: {{ patientPtids }}</span> -->
+    <!-- <button class="button--grey" @click="emitToParent">Upload Patients</button> -->
   </div>
 </template>
 
@@ -60,9 +58,12 @@ export default {
           this.patientPtids.push(this.patients[id].ptid);
         }
       }
+
+      this.emitToParent();
     },
     select() {
       this.allSelected = false;
+      this.emitToParent();
     },
     emitToParent(event) {
       this.$emit('selectPatients', this.patientPtids);
