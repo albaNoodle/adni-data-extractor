@@ -75,18 +75,6 @@ export default {
   methods: {
     ...mapActions('dictionaries', ['getBrainParts']),
 
-    // selectAll() {
-    //   this.brainPartsKeynames = [];
-
-    //   if (this.allSelected) {
-    //     //value before updates
-    //     for (let id in this.brainParts) {
-    //       this.brainPartsKeynames.push(this.brainParts[id].bp_keyname);
-    //     }
-    //   }
-
-    //   this.emitToParent();
-    // },
     selectAll() {
       this.brainPartsKeynames = [];
 

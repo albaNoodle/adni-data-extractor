@@ -3,15 +3,34 @@
     <h4>Patients</h4>
     <div>
       <v-card elevation="16" max-width="400" class="mx-auto">
+        <v-text-field
+          v-model="search"
+          placeholder="Search"
+          prepend-inner-icon="mdi-account-search"
+          class="px-3 v-input--no-border"
+          dense
+          flat
+          hide-details
+          single-line
+        ></v-text-field>
+      </v-card>
+
+      <v-card elevation="16" max-width="400" class="mx-auto">
         <v-checkbox v-model="allSelected" @click="selectAll" :label="`Select All`" />
       </v-card>
 
       <v-card elevation="16" max-width="400" class="mx-auto">
-        <v-virtual-scroll :items="patients" height="300" item-height="64">
+        <v-virtual-scroll :items="filteredPatients" height="300" item-height="64">
           <template v-slot:default="{ item }">
             <v-list-item>
               <v-list-item-content>
-                <v-checkbox v-model="patientPtids" @click="select" :value="item.ptid" :label="`${item.rid}  - ${item.ptid}`" />
+                <v-checkbox
+                  v-model="patientPtids"
+                  @click="select"
+                  :key="item.ptid"
+                  :value="item.ptid"
+                  :label="`${item.rid} - ${item.ptid}`"
+                />
               </v-list-item-content>
             </v-list-item>
           </template>
@@ -34,10 +53,23 @@ export default {
       allSelected: false,
       patientPtids: [],
       checked: false,
+      search: '',
     };
   },
   computed: {
     ...mapState('patients', ['patients']),
+    filteredPatients() {
+      if (this.search) {
+        this.allSelected = false;
+        const term = this.search.toLowerCase();
+        return this.patients.filter((c) => {
+          // TODO: should be locale aware
+          return c.ptid.toLowerCase().includes(term) || c.rid.toString().includes(term);
+        });
+      } else {
+        return this.patients;
+      }
+    },
   },
 
   async fetch() {
@@ -54,8 +86,8 @@ export default {
 
       if (this.allSelected) {
         //value before updates
-        for (let id in this.patients) {
-          this.patientPtids.push(this.patients[id].ptid);
+        for (let id in this.filteredPatients) {
+          this.patientPtids.push(this.filteredPatients[id].ptid);
         }
       }
 
