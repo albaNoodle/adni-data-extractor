@@ -1,6 +1,9 @@
 <template>
   <div>
     <v-container class="grey lighten-5">
+      <div class="section-title">
+        <h2> Extract Data </h2>
+      </div>
       <v-row no-gutters justify="center">
         <v-col md="4">
           <v-card class="pa-2" outlined tile>
@@ -14,10 +17,19 @@
         </v-col>
       </v-row>
     </v-container>
-    <!-- {{ selectedPatients }}
-    {{ selectedBrainParts }} -->
+    <!-- {{ selectedPatients }}-->
+    <!-- {{ selectedBrainParts }} -->
   </div>
 </template>
+
+<style>
+.section-title {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+</style>
 
 <script>
 import PatientsSelector from '~/components/PatientsSelector.vue';
