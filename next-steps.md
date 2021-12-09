@@ -39,3 +39,7 @@ Simple web with petitions:
 Uniqueness on Phase and Rid <- NO, RID unique accrosss `Phase`
 
 Hacer columnas nullables :) and ready! Actualizar solo con valores no nulos, sino pisan los correctos
+
+**NOTE** increment node heap space `export NODE_OPTIONS="--max-old-space-size=8192"`
+
+NEXT: on production, tests, add filters to web

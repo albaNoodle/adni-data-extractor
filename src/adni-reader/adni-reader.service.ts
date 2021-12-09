@@ -85,28 +85,52 @@ export class AdniReaderService {
 
     // write some data with a utf-8 encoding
     writeStream.write(header);
-    exportEntries.map((e) => {
-      const entry = [e.imageUid, e.ptid, e.diagnosis, e.visCode, e.examDate.toISOString()];
-      for (let phenotypeLabel of phenotypeLabels) {
-        const phenoValue = e.phenotypes.get(phenotypeLabel);
-        if (phenoValue >= 0) {
-          entry.push(phenoValue);
-        } else {
-          entry.push(-1);
-        }
+
+    if (exportEntries.length > 100) {
+      let iFinal = 100;
+      let iInit = 0;
+      while (iInit < exportEntries.length) {
+        console.log(`FROM ${iInit} TO ${iFinal}`);
+        const exportEntriesToProcess = exportEntries.slice(iInit, iFinal);
+        console.log(
+          `FROM ${exportEntriesToProcess[0]} TO ${
+            exportEntriesToProcess[exportEntriesToProcess.length - 1]
+          }`
+        );
+        exportEntriesToProcess.map((e) => {
+          const entry = [e.imageUid, e.ptid, e.diagnosis, e.visCode, e.examDate.toISOString()];
+          for (let phenotypeLabel of phenotypeLabels) {
+            const phenoValue = e.phenotypes.get(phenotypeLabel);
+            if (phenoValue >= 0) {
+              entry.push(phenoValue);
+            } else {
+              entry.push(-1);
+            }
+          }
+
+          const writableEntry = entry.join(',') + '\n';
+          writeStream.write(writableEntry);
+        });
+        iInit = iFinal;
+        iFinal += 100;
       }
+    } else {
+      exportEntries.map((e) => {
+        const entry = [e.imageUid, e.ptid, e.diagnosis, e.visCode, e.examDate.toISOString()];
+        for (let phenotypeLabel of phenotypeLabels) {
+          const phenoValue = e.phenotypes.get(phenotypeLabel);
+          if (phenoValue >= 0) {
+            entry.push(phenoValue);
+          } else {
+            entry.push(-1);
+          }
+        }
 
-      const writableEntry = entry.join(',') + '\n';
-      writeStream.write(writableEntry);
-    });
+        const writableEntry = entry.join(',') + '\n';
+        writeStream.write(writableEntry);
+      });
+    }
 
-    // fs.writeFile('docs/test.txt', content, err => {
-    //   if (err) {
-    //     console.error(err)
-    //     return
-    //   }
-    //   //file written successfully
-    // })
     writeStream.on('finish', () => {
       console.log('wrote all data to file');
     });

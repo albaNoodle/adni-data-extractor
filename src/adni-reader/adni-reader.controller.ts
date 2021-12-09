@@ -54,6 +54,7 @@ export class AdniReaderController {
     @Body() adniReaderInDto: AdniReaderInDto,
     @Res() res: Response
   ) {
+    console.log(adniReaderInDto.patientsPtids.length);
     const filePath = await this.adniReaderService.getPhenotypesCsv(adniReaderInDto);
     const file = createReadStream(join(process.cwd(), filePath));
 
