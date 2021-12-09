@@ -2,7 +2,7 @@
   <div>
     <h4>Brain Parts</h4>
     <div>
-      <v-card elevation="16" max-width="400" class="mx-auto">
+      <v-card elevation="16" class="mx-auto">
         <v-text-field
           v-model="search"
           placeholder="Search"
@@ -14,11 +14,11 @@
           single-line
         ></v-text-field>
       </v-card>
-      <v-card elevation="16" max-width="400" class="mx-auto">
+      <v-card elevation="16" class="mx-auto">
         <v-checkbox v-model="allSelected" @change="selectAll" :label="`Select All`" />
       </v-card>
 
-      <v-card elevation="16" max-width="400" class="mx-auto">
+      <v-card elevation="16" class="mx-auto">
         <v-virtual-scroll :items="filteredBrainParts" height="300" item-height="64">
           <template v-slot:default="{ item }">
             <v-list-item>
@@ -61,7 +61,9 @@ export default {
         const term = this.search.toLowerCase();
         return this.brainParts.filter((c) => {
           // TODO: should be locale aware
-          return c.bp_humanName.toLowerCase().includes(term) || c.bp_keyname.toLowerCase().includes(term);
+          return (
+            c.bp_humanName.toLowerCase().includes(term) || c.bp_keyname.toLowerCase().includes(term)
+          );
         });
       } else {
         return this.brainParts;

@@ -1,20 +1,38 @@
 <template>
-  <div>
-    DICTIONARIES
+  <v-container class="grey lighten-5">
+    <v-container class="section-centered">
+      <h2> DICTIONARIES </h2>
+    </v-container>
     <v-form @submit.prevent="onSubmit">
-      <file-selector v-model="file" />
-
-      <v-card-actions>
-        <div class="my-8 d-flex justify-center justify-md-start">
-          <v-btn color="secondary" rounded x-large type="submit" :loading="loading"> Submit </v-btn>
-        </div>
-      </v-card-actions>
-      <div v-if="this.loading">LOADING</div>
-      <div v-if="this.uploadError">{{ this.uploadMessage }}</div>
-      <div v-else>{{ this.resultMessage }}</div>
+      <v-container class="section-centered">
+        <file-selector v-model="file" />
+      </v-container>
+      <v-container class="section-centered">
+        <v-card-actions>
+          <div class="my-8 d-flex justify-center justify-md-start">
+            <v-btn rounded x-large type="submit" :loading="loading"> Submit </v-btn>
+          </div>
+        </v-card-actions>
+      </v-container>
+      <v-container class="section-centered">
+        <v-alert v-if="this.loading" type="info" color="green-light">LOADING</v-alert>
+        <v-alert v-if="this.uploadError" color="red" type="error">{{ this.uploadMessage }}</v-alert>
+        <v-alert v-if="this.resultMessage.length > 0" type="success" color="green">{{
+          this.resultMessage
+        }}</v-alert>
+      </v-container>
     </v-form>
-  </div>
+  </v-container>
 </template>
+
+<style>
+.section-centered {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+</style>
 
 <script>
 import FileSelector from '~/components/FileSelector';

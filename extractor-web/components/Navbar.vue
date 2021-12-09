@@ -18,7 +18,6 @@ export default {
         { to: '/patients', name: 'Patients' },
         { to: '/images', name: 'Images' },
         { to: '/extractor', name: 'Extractor' },
-        { to: '/products/view', name: 'Products/View' },
       ],
     };
   },

@@ -34,12 +34,18 @@ export class AdniReaderService {
     return this.generateAdniCsv(adniImages, patients, phenotypes);
   }
 
-  private getExportEntries(adniImages: AdniImage[], adniPatients: Patient[], phenotypeLabels: string[]): ExportEntry[] {
+  private getExportEntries(
+    adniImages: AdniImage[],
+    adniPatients: Patient[],
+    phenotypeLabels: string[]
+  ): ExportEntry[] {
     const exportEntries = [];
     adniImages.map((image) => {
       const patient = adniPatients.find((p) => p.rid === image.rid);
       if (!patient) {
-        throw new Error(`No patient with rid '${image.rid}' associated to image '${image.imageUid}'`);
+        throw new Error(
+          `No patient with rid '${image.rid}' associated to image '${image.imageUid}'`
+        );
       }
       const exportEntry: ExportEntry = {
         imageUid: image.imageUid,
@@ -65,7 +71,11 @@ export class AdniReaderService {
     return exportEntries;
   }
 
-  private generateAdniCsv(adniImages: AdniImage[], adniPatients: Patient[], phenotypeLabels: string[]): string {
+  private generateAdniCsv(
+    adniImages: AdniImage[],
+    adniPatients: Patient[],
+    phenotypeLabels: string[]
+  ): string {
     const exportEntries = this.getExportEntries(adniImages, adniPatients, phenotypeLabels);
     const path = 'docs/test.csv';
 
@@ -77,11 +87,12 @@ export class AdniReaderService {
     writeStream.write(header);
     exportEntries.map((e) => {
       const entry = [e.imageUid, e.ptid, e.diagnosis, e.visCode, e.examDate.toISOString()];
-      for (let phenoValue of e.phenotypes.values()) {
+      for (let phenotypeLabel of phenotypeLabels) {
+        const phenoValue = e.phenotypes.get(phenotypeLabel);
         if (phenoValue >= 0) {
           entry.push(phenoValue);
         } else {
-          entry.push('');
+          entry.push(-1);
         }
       }
 

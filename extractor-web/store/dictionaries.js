@@ -42,7 +42,6 @@ const actions = {
       }
       const collection = await dispatch('loadBrainParts')
       commit('SET_BRAIN_PARTS', { collection })
-      console.log(collection[0])
       return collection
     } catch (error) {
       console.error(error)
@@ -81,7 +80,6 @@ const cachedBrainParts = (state) => {
 }
 
 const isExpired = (cacheStoredAt) => {
-  console.log(cacheStoredAt)
   if (!cacheStoredAt) return true
   return +new Date() > +cacheStoredAt + CACHE_EXPIRATION_MS
 }

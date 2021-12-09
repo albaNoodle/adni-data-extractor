@@ -1,4 +1,14 @@
-import { Body, ClassSerializerInterceptor, Controller, Get, Inject, Post, Query, UploadedFile, UseInterceptors } from '@nestjs/common';
+import {
+  Body,
+  ClassSerializerInterceptor,
+  Controller,
+  Get,
+  Inject,
+  Post,
+  Query,
+  UploadedFile,
+  UseInterceptors,
+} from '@nestjs/common';
 import { ApiConsumes, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { AdniImage } from '../entities/adni-image.entity';
 import { AdniImagesService } from './adni-images.service';
@@ -31,7 +41,7 @@ export class AdniImagesController {
   }
 
   @Get()
-  @ApiOperation({ summary: 'Generates ADNI images on database from a .csv file' })
+  @ApiOperation({ summary: 'Get ADNI images on database' })
   async getAdniImages(@Query() adniImagesFilterDto: AdniImagesFilterDto): Promise<AdniImage[]> {
     return this.adniImagesService.getAdniImages(adniImagesFilterDto);
   }

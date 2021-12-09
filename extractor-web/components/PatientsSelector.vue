@@ -2,7 +2,7 @@
   <div>
     <h4>Patients</h4>
     <div>
-      <v-card elevation="16" max-width="400" class="mx-auto">
+      <v-card elevation="16" class="mx-auto">
         <v-text-field
           v-model="search"
           placeholder="Search"
@@ -15,11 +15,11 @@
         ></v-text-field>
       </v-card>
 
-      <v-card elevation="16" max-width="400" class="mx-auto">
+      <v-card elevation="16" class="mx-auto">
         <v-checkbox v-model="allSelected" @click="selectAll" :label="`Select All`" />
       </v-card>
 
-      <v-card elevation="16" max-width="400" class="mx-auto">
+      <v-card elevation="16" class="mx-auto">
         <v-virtual-scroll :items="filteredPatients" height="300" item-height="64">
           <template v-slot:default="{ item }">
             <v-list-item>
