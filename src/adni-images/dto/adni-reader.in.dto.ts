@@ -1,5 +1,5 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { IsArray, IsDateString, IsOptional, IsString } from 'class-validator';
+import { IsArray, IsDateString, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
 export class AdniReaderInDto {
   @IsOptional()
@@ -19,6 +19,7 @@ export class AdniReaderInDto {
   toDate?: Date;
 
   @IsArray()
+  @IsNotEmpty()
   @IsString({ each: true })
   @ApiProperty({
     example: ['011_S_0001', '011_S_0002', '011_S_0003'],
@@ -27,12 +28,13 @@ export class AdniReaderInDto {
   patientsPtids: string[];
 
   @IsArray()
+  @IsNotEmpty()
   @IsString({ each: true })
-  @ApiPropertyOptional({
+  @ApiProperty({
     example: ['ST14CV', 'ST1SV'],
     description: `List of brain part keyname of the phenotypes selected`,
   })
-  phenotypes?: string[];
+  phenotypes: string[];
 
   @IsOptional()
   @IsString()

@@ -100,7 +100,7 @@ export default {
         // response.headers['content-disposition']
         //   ? response.headers['content-disposition'].slice(22, -1)
         //   :
-        'report.csv';
+        `adni-data-${new Date().getTime()}.csv`;
       const fileLink = document.createElement('a');
       fileLink.href = fileURL;
       fileLink.setAttribute('download', fileName);

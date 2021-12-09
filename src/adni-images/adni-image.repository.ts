@@ -1,5 +1,10 @@
 import { AdniImage } from '../entities/adni-image.entity';
-import { EntityRepository, getConnection, OrderByCondition, Repository, UpdateResult } from 'typeorm';
+import {
+  EntityRepository,
+  getConnection,
+  OrderByCondition,
+  Repository,
+} from 'typeorm';
 import { AdniImageCreateDto } from './dto/adni-image.create.dto';
 import { AdniImagesFilterDto } from './dto/adni-images.filter.dto';
 import { Patient } from 'src/entities/patient.entity';
@@ -53,14 +58,27 @@ export class AdniImageRepository extends Repository<AdniImage> {
 
   async getAdniImages(adniImagesFilterDto: AdniImagesFilterDto): Promise<AdniImage[]> {
     const { fromDate, toDate, patientsPtids, phenotypes } = adniImagesFilterDto;
+    if (!patientsPtids || patientsPtids.length === 0) {
+      return [];
+    }
     const query = this.createQueryBuilder('image');
     query.innerJoinAndMapOne('image.patient', Patient, 'patient', 'patient.rid = image.rid');
     if (!phenotypes || phenotypes.length === 0) {
       query.leftJoinAndSelect('image.phenotypes', 'phenotype');
     } else {
-      query.leftJoinAndSelect('image.phenotypes', 'phenotype', 'phenotype.brainPartKeyname IN (:phenotypes)', { phenotypes });
+      query.leftJoinAndSelect(
+        'image.phenotypes',
+        'phenotype',
+        'phenotype.brainPartKeyname IN (:phenotypes)',
+        { phenotypes }
+      );
     }
-    query.leftJoinAndMapOne('phenotype.brainPart', BrainPart, 'bp', 'bp.keyname = phenotype.brainPartKeyname');
+    query.leftJoinAndMapOne(
+      'phenotype.brainPart',
+      BrainPart,
+      'bp',
+      'bp.keyname = phenotype.brainPartKeyname'
+    );
     query.where('patient.ptid IN (:patientsPtids)', { patientsPtids });
 
     const orderCondition: OrderByCondition = {};
