@@ -16,6 +16,8 @@ export class ExportEntry {
   phenotypes: Map<string, number>; // Phenotype label, value
 }
 
+const MAX_PTS_PER_LOOP = 100;
+
 @Injectable()
 export class AdniReaderService {
   constructor(
@@ -77,7 +79,7 @@ export class AdniReaderService {
     phenotypeLabels: string[]
   ): string {
     const exportEntries = this.getExportEntries(adniImages, adniPatients, phenotypeLabels);
-    const path = 'docs/test.csv';
+    const path = 'tmp_docs/tmp.csv';
 
     let writeStream = fs.createWriteStream(path, { encoding: 'utf8' });
 
@@ -86,17 +88,11 @@ export class AdniReaderService {
     // write some data with a utf-8 encoding
     writeStream.write(header);
 
-    if (exportEntries.length > 100) {
-      let iFinal = 100;
+    if (exportEntries.length > MAX_PTS_PER_LOOP) {
+      let iFinal = MAX_PTS_PER_LOOP;
       let iInit = 0;
       while (iInit < exportEntries.length) {
-        console.log(`FROM ${iInit} TO ${iFinal}`);
         const exportEntriesToProcess = exportEntries.slice(iInit, iFinal);
-        console.log(
-          `FROM ${exportEntriesToProcess[0]} TO ${
-            exportEntriesToProcess[exportEntriesToProcess.length - 1]
-          }`
-        );
         exportEntriesToProcess.map((e) => {
           const entry = [e.imageUid, e.ptid, e.diagnosis, e.visCode, e.examDate.toISOString()];
           for (let phenotypeLabel of phenotypeLabels) {
@@ -112,7 +108,7 @@ export class AdniReaderService {
           writeStream.write(writableEntry);
         });
         iInit = iFinal;
-        iFinal += 100;
+        iFinal += MAX_PTS_PER_LOOP;
       }
     } else {
       exportEntries.map((e) => {

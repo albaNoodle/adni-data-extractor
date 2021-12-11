@@ -1,7 +1,8 @@
-data/dictionaries/*
-data/fenotypes/*
-data/patients/*
+organization.md
 data/adni/*
 node_modules
 dist/*
-docs/test.csv
+tmp_docs/tmp.csv
+data/dictionaries/*
+data/patients/*
+data/fenotypes/*
