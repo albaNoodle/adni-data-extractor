@@ -14,6 +14,7 @@ export default {
       open: false,
       links: [
         { to: '/', name: 'Home' },
+        { to: '/usage', name: 'How to use' },
         { to: '/dictionaries', name: 'Dictionaries' },
         { to: '/patients', name: 'Patients' },
         { to: '/images', name: 'Images' },

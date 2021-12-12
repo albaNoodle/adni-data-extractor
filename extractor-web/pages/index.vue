@@ -4,6 +4,7 @@
       <app-logo />
       <h1 class="title"> ADNI data extractor </h1>
       <h2 class="subtitle"> Nuxt.js project </h2>
+      <a href="/usage" class="button--green-light first-button">How to use?</a>
       <div class="links">
         <a href="/dictionaries" class="button--grey">Upload Dictionaries</a>
         <a href="/patients" class="button--grey">Upload Patients</a>
@@ -24,7 +25,7 @@ export default {
 
 <style>
 .home-container {
-  min-height: 100vh;
+  min-height: 80vh;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -32,7 +33,8 @@ export default {
 }
 
 .title {
-  font-family: 'Quicksand', 'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; /* 1 */
+  font-family: 'Quicksand', 'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+    'Helvetica Neue', Arial, sans-serif; /* 1 */
   display: block;
   font-weight: 300;
   font-size: 100px;
@@ -50,5 +52,9 @@ export default {
 
 .links {
   padding-top: 15px;
+}
+
+.first-button {
+  margin: 30px;
 }
 </style>
