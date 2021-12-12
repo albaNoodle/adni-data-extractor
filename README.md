@@ -1,73 +1,192 @@
 <p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo_text.svg" width="320" alt="Nest Logo" /></a>
+<div style="display: flex; align-items: flex-start;">
+  <a style="padding: 10px;" href="http://adni.loni.usc.edu/" target="blank"><img src="http://adni.loni.usc.edu/wp-content/themes/freshnews-dev-v2/images/ADNI_logo_vector.png" width="200" alt="ADNI Logo" /></a>
+  <a style="padding-top: 20px;"target="blank"><img src="https://www.unizar.es/sites/default/files/logos-unizar/logouz_cmyk_alta_negro-02.png" width="320" alt="Unizar Logo" /></a>
+  </div>
 </p>
-
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
-
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+<p align="center">Program for ADNI database data processing.</p>
 
 ## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+A server that provides an API and a simple web applicattion for uploading ADNI data to system and getting that data processed and filtered.
+
+Server has been implemented using [Nest.js](https://docs.nestjs.com/) (version `7.5.3`) framework and web app using [Nuxt](https://nuxtjs.org/docs/get-started/installation) (version `2.15.8`) framework. [Node](https://nodejs.org/es/) version used is `v14.15.0`.
+
+[Yarn](https://yarnpkg.com/getting-started) has been used for node packages administration, but [npm](https://docs.npmjs.com/getting-started) could have been used too.
 
 ## Installation
 
+### Server
+
+From `root` directory exec:
+
 ```bash
-$ npm install
+$ yarn install
+```
+
+### Web
+
+From `extractor-web` directory exec:
+
+```bash
+$ yarn install
+```
+
+## Database configuration
+
+Database is congured on the file `config\default.yml` for development environment. File for test environment is `config\test.yml`
+
+This project has been developed using `mysql`(Ver `8.0.27`).
+
+```yml
+db:
+  type: 'mysql'
+  port: 3306
+  database: 'adni'
+  username: 'root'
+  password: ''
+```
+
+Parameters can be change so the system can be used with the database manager of any host machine. Depending of the database used it may be needed some changes on entities or migration files.
+
+### Run migrations
+
+For initializing database use next command:
+
+```bash
+# Dev env
+yarn typeorm migration:run
+
+# Test env
+env NODE_ENV=test yarn typeorm migration:run
 ```
 
 ## Running the app
 
+### Running Server
+
 ```bash
 # development
-$ npm run start
+$ yarn start
 
 # watch mode
-$ npm run start:dev
+$ yarn start:dev
 
-# production mode
-$ npm run start:prod
+# production mode - Not available yet
+$ yarn start:prod
+```
+
+### Running Web App
+
+```bash
+# development on watch mode
+$ yarn dev
+
+# build
+$ yarn build
+
+# run builded app
+$ yarn run
 ```
 
 ## Test
 
 ```bash
 # unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+$ yarn test
 ```
 
-## Support
+## Input format files
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+This system has been develop using files obtained from ADNI without previous processation. So a file from ADNI of any of the uploading types will work.
+
+In case it would be used some modified file, the requisites for each type of input file are the nexts:
+
+### Dictionaries
+
+It must include the next columns:
+
+- `FLDNAME`
+- `TEXT`
+- `TBLNAME`
+
+### Patients - Demographic file
+
+It must include the next columns:
+
+- `RID`
+- `Phase`
+- `PTGENDER`
+- `PTDOBMM`
+- `PTDOBYY`
+
+### Patients - Visit file
+
+It must include the next columns:
+
+- `RID`
+- `PTID`
+- `Screen.Diagnosis`
+
+### Images
+
+It must include the next columns:
+
+- `IMAGEUID`
+- `RID`
+- `VISCODE`
+- `EXAMDATE`
+
+Phenotypes columns (`ST1SV`, `ST2SV`, etc...) must start on column index 22 (starting by 0).
+
+## Output format files
+
+Output file es composed by the first five column as follows:
+
+- `Image.Uid`: Image identifier
+- `RID` Patient identifier
+- `PTID` Patient PTID is an alternative identifier from RID
+- `Diagnosis`: Patient diagnosis. Posible values:
+  - NL: Cognitively normal
+  - MCI: Mild cognitive impairment
+  - AD: Alzheimer's disease
+- `VISCODE`: Visit code, represents the visit month of the study. Ex: `m12`, `m06`. `bl` value stands for baseline.
+- `EXAMDATE`: Date when image was taken
+
+From column index 5 to last column (starting by 0) there are the phenotypes selected when extracting data.
+
+## Error `heap out of memory`
+
+When extracting data from a large number of patients of a large number of phenotypes the memory assign to node process may not be enough. In this case an error similar like this appears on server console:
+
+```bash
+FATAL ERROR: CALL_AND_RETRY_LAST Allocation failed - JavaScript heap out of memory
+```
+
+If this situation happens, the solution would be assign more memory for node process with the command:
+
+```bash
+export NODE_OPTIONS="--max-old-space-size=8192"
+```
+
+## Next Steps
+
+- Optimize code for optimizing memory usage during data extraction.
+
+- Implement test clases properly. API tests are not testing all functionality. Tests for web do not exist.
+
+- Different environments configuration, for deploying the system in a production and/or preproduction enviroment so it can be used on remote machine.
+
+- Use filtered options on `GET` endponits. Some endpoints offer the posibility for getting data filtered (patients filtered by year of birth, brain parts iltered by ADNI phase...). This options are not used in the web by now.
+
+- For uploading users it is mandatory upload a demographic file and a visits file. It would be more usable if API and web allow to upload only one of that files in case it is only that one needed.
+
+- Server and frontend validation for input files (ex: they are csv files, they are not empty, they have the needed headers...).
+
+- Options for customizing output files names.
+
+- Sort phenotype columns when creating output file (ex: alphabetically ordered)
 
 ## Stay in touch
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](LICENSE).
+- Author - [Alba Clemente](https://www.linkedin.com/in/alba-clemente-villafranca-b00ba9146/)
