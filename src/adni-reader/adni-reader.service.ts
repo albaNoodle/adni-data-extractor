@@ -9,6 +9,7 @@ import { Diagnosis } from 'src/enums/diagnosis.enum';
 
 export class ExportEntry {
   imageUid: number;
+  rid: number;
   ptid: string;
   diagnosis: Diagnosis;
   visCode: string;
@@ -51,6 +52,7 @@ export class AdniReaderService {
       }
       const exportEntry: ExportEntry = {
         imageUid: image.imageUid,
+        rid: patient.rid,
         ptid: patient.ptid,
         diagnosis: patient.diagnosis,
         visCode: image.visCode,
@@ -94,7 +96,14 @@ export class AdniReaderService {
       while (iInit < exportEntries.length) {
         const exportEntriesToProcess = exportEntries.slice(iInit, iFinal);
         exportEntriesToProcess.map((e) => {
-          const entry = [e.imageUid, e.ptid, e.diagnosis, e.visCode, e.examDate.toISOString()];
+          const entry = [
+            e.imageUid,
+            e.rid,
+            e.ptid,
+            e.diagnosis,
+            e.visCode,
+            e.examDate.toISOString(),
+          ];
           for (let phenotypeLabel of phenotypeLabels) {
             const phenoValue = e.phenotypes.get(phenotypeLabel);
             if (phenoValue >= 0) {
@@ -112,7 +121,7 @@ export class AdniReaderService {
       }
     } else {
       exportEntries.map((e) => {
-        const entry = [e.imageUid, e.ptid, e.diagnosis, e.visCode, e.examDate.toISOString()];
+        const entry = [e.imageUid, e.rid, e.ptid, e.diagnosis, e.visCode, e.examDate.toISOString()];
         for (let phenotypeLabel of phenotypeLabels) {
           const phenoValue = e.phenotypes.get(phenotypeLabel);
           if (phenoValue >= 0) {
@@ -138,7 +147,7 @@ export class AdniReaderService {
   }
 
   private writeHeader(phenotypeLabels: string[]): string {
-    const header = ['Image.Uid', 'PTID', 'Diagnosis', 'VISCODE', 'EXAMDATE'];
+    const header = ['Image.Uid', 'RID', 'PTID', 'Diagnosis', 'VISCODE', 'EXAMDATE'];
     header.push(...phenotypeLabels);
     return header.join(',') + '\n';
   }
