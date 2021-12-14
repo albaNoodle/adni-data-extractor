@@ -69,7 +69,7 @@ env NODE_ENV=test yarn typeorm migration:run
 # development
 $ yarn start
 
-# watch mode
+# watch mode -> 'http://localhost:3000/' by default
 $ yarn start:dev
 
 # production mode - Not available yet
@@ -79,7 +79,7 @@ $ yarn start:prod
 ### Running Web App
 
 ```bash
-# development on watch mode
+# development on watch mode -> 'http://localhost:3001/' by default
 $ yarn dev
 
 # build
@@ -154,6 +154,10 @@ Output file es composed by the first five column as follows:
 - `EXAMDATE`: Date when image was taken
 
 From column index 5 to last column (starting by 0) there are the phenotypes selected when extracting data.
+
+## API doc
+
+Swagger API doc is available on the route `/api` of the server. For example, running server in local in port 3000, it would be `http://localhost:3000/api`.
 
 ## Error `heap out of memory`
 
