@@ -11,6 +11,7 @@ export class ExportEntry {
   imageUid: number;
   rid: number;
   ptid: string;
+  age: number;
   diagnosis: Diagnosis;
   visCode: string;
   examDate: Date;
@@ -54,6 +55,7 @@ export class AdniReaderService {
         imageUid: image.imageUid,
         rid: patient.rid,
         ptid: patient.ptid,
+        age: this.calculateAge(image.examDate, patient.birthMonth, patient.birthYear),
         diagnosis: patient.diagnosis,
         visCode: image.visCode,
         examDate: image.examDate,
@@ -100,6 +102,7 @@ export class AdniReaderService {
             e.imageUid,
             e.rid,
             e.ptid,
+            e.age,
             e.diagnosis,
             e.visCode,
             e.examDate.toISOString(),
@@ -121,7 +124,15 @@ export class AdniReaderService {
       }
     } else {
       exportEntries.map((e) => {
-        const entry = [e.imageUid, e.rid, e.ptid, e.diagnosis, e.visCode, e.examDate.toISOString()];
+        const entry = [
+          e.imageUid,
+          e.rid,
+          e.ptid,
+          e.age,
+          e.diagnosis,
+          e.visCode,
+          e.examDate.toISOString(),
+        ];
         for (let phenotypeLabel of phenotypeLabels) {
           const phenoValue = e.phenotypes.get(phenotypeLabel);
           if (phenoValue >= 0) {
@@ -147,7 +158,7 @@ export class AdniReaderService {
   }
 
   private writeHeader(phenotypeLabels: string[]): string {
-    const header = ['Image.Uid', 'RID', 'PTID', 'Diagnosis', 'VISCODE', 'EXAMDATE'];
+    const header = ['Image.Uid', 'RID', 'PTID', 'AGE', 'Diagnosis', 'VISCODE', 'EXAMDATE'];
     header.push(...phenotypeLabels);
     return header.join(',') + '\n';
   }
@@ -169,5 +180,15 @@ export class AdniReaderService {
     }
 
     return str;
+  }
+
+  // Utils
+  private calculateAge(examDate: Date, birthMonth: number, birthYear: number): number {
+    const examMonth = examDate.getMonth() + 1;
+    const examYear = examDate.getFullYear();
+    const monthsAge = examMonth - birthMonth + (examYear - birthYear) * 12;
+    const age = monthsAge / 12;
+    console.log(age);
+    return Math.round(age * 100) / 100;
   }
 }
