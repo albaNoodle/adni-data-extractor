@@ -188,7 +188,6 @@ export class AdniReaderService {
     const examYear = examDate.getFullYear();
     const monthsAge = examMonth - birthMonth + (examYear - birthYear) * 12;
     const age = monthsAge / 12;
-    console.log(age);
     return Math.round(age * 100) / 100;
   }
 }

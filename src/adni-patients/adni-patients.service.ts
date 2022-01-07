@@ -54,7 +54,7 @@ export class AdniPatientsService {
       const createPatient: Partial<PatientCreateDto> = {
         rid: row['RID'],
         ptid: row['PTID'],
-        diagnosis: row['Screen.Diagnosis'],
+        diagnosis: row['Screen.Diagnosis'] || row['DX_bl'],
       };
       if (!patientsToProcessPartial.find((p) => p.rid === createPatient.rid)) {
         // Dto not already existing
@@ -99,7 +99,6 @@ export class AdniPatientsService {
     }
 
     await this.patientRepository.createOrUpdatePatients(patientsToProcess);
-
 
     return null;
   }

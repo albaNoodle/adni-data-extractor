@@ -1,10 +1,5 @@
 import { AdniImage } from '../entities/adni-image.entity';
-import {
-  EntityRepository,
-  getConnection,
-  OrderByCondition,
-  Repository,
-} from 'typeorm';
+import { EntityRepository, getConnection, OrderByCondition, Repository } from 'typeorm';
 import { AdniImageCreateDto } from './dto/adni-image.create.dto';
 import { AdniImagesFilterDto } from './dto/adni-images.filter.dto';
 import { Patient } from 'src/entities/patient.entity';
@@ -82,6 +77,9 @@ export class AdniImageRepository extends Repository<AdniImage> {
     query.where('patient.ptid IN (:patientsPtids)', { patientsPtids });
 
     const orderCondition: OrderByCondition = {};
+    orderCondition[`image.examDate`] = 'ASC';
+    orderCondition[`image.imageUid`] = 'ASC';
+
     if (fromDate) {
       query.andWhere('image.examDate >= :fromDate', { fromDate });
       orderCondition[`image.examDate`] = 'ASC';
@@ -93,6 +91,7 @@ export class AdniImageRepository extends Repository<AdniImage> {
       orderCondition[`image.imageUid`] = 'DESC';
     }
 
+    query.orderBy(orderCondition);
     return query.getMany();
   }
 }
