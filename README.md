@@ -137,7 +137,9 @@ It must include the next columns:
 - `VISCODE`
 - `EXAMDATE`
 
-Phenotypes columns (`ST1SV`, `ST2SV`, etc...) must start on column index 22 (starting by 0).
+Phenotypes columns (`ST1SV`, `ST2SV`, etc...) generally must start on column index 22 (starting by 0).
+In case of some files, like `ADNIMERGE.csv` file, phenotypes can start at any index but they have to start on the newt column to `IMAGEUID` column.
+Last column on the file never is consider a phenotype (`update_stamp` column).
 
 ## Output format files
 
