@@ -81,8 +81,9 @@ export class AdniImageRepository extends Repository<AdniImage> {
     query.where('patient.ptid IN (:patientsPtids)', { patientsPtids });
 
     const orderCondition: OrderByCondition = {};
-    orderCondition[`image.examDate`] = 'ASC';
+    orderCondition[`image.rid`] = 'ASC';
     orderCondition[`image.imageUid`] = 'ASC';
+    orderCondition[`image.examDate`] = 'ASC';
 
     if (fromDate) {
       query.andWhere('image.examDate >= :fromDate', { fromDate });
