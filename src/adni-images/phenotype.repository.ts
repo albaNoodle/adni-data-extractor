@@ -23,16 +23,18 @@ export class PhenotypeRepository extends Repository<Phenotype> {
         phenotype.value = value;
         return phenotype;
       });
-
-      await getConnection()
-        .createQueryBuilder()
-        .insert()
-        .into(Phenotype)
-        .values(phenotipes)
-        .orUpdate({ conflict_target: ['imageUid', 'brainPartKeyname'], overwrite: ['value'] })
-        .updateEntity(false)
-        .execute();
-
+      try {
+        await getConnection()
+          .createQueryBuilder()
+          .insert()
+          .into(Phenotype)
+          .values(phenotipes)
+          .orUpdate({ conflict_target: ['imageUid', 'brainPartKeyname'], overwrite: ['value'] })
+          .updateEntity(false)
+          .execute();
+      } catch (e) {
+        console.log('Error on creating phenotypes');
+      }
       // await Promise.all(phenotipes.map(async (p) => await p.reload()));
 
       return phenotipes;

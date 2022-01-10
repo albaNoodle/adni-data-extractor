@@ -36,11 +36,11 @@ export class AdniReaderInDto {
   })
   phenotypes: string[];
 
-  @IsOptional()
-  @IsString()
-  @ApiPropertyOptional({
-    example: 'adni-unizar',
-    description: `Name of the generated csv`,
-  })
-  fileName?: string;
+  // @IsOptional()
+  // @IsString()
+  // @ApiPropertyOptional({
+  //   example: 'adni-unizar',
+  //   description: `Name of the generated csv`,
+  // })
+  // fileName?: string;
 }

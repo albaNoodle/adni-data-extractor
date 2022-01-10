@@ -4,7 +4,7 @@ server:
 db:
   type: 'mysql'
   port: 3306
-  database: 'adni_merge_dev'
+  database: 'adni'
   username: 'root'
   password: ''
 

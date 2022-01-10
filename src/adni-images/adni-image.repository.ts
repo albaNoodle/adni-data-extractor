@@ -36,14 +36,18 @@ export class AdniImageRepository extends Repository<AdniImage> {
         return adniImage;
       });
 
-      await getConnection()
-        .createQueryBuilder()
-        .insert()
-        .into(AdniImage)
-        .values(images)
-        .orUpdate({ conflict_target: ['imageUid'], overwrite: ['rid', 'visCode', 'examDate'] })
-        .updateEntity(false)
-        .execute();
+      try {
+        await getConnection()
+          .createQueryBuilder()
+          .insert()
+          .into(AdniImage)
+          .values(images)
+          .orUpdate({ conflict_target: ['imageUid'], overwrite: ['rid', 'visCode', 'examDate'] })
+          .updateEntity(false)
+          .execute();
+      } catch (e) {
+        console.log('Error on creating images');
+      }
 
       await Promise.all(images.map(async (p) => await p.reload()));
 

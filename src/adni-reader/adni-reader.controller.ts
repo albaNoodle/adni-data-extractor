@@ -59,7 +59,7 @@ export class AdniReaderController {
     const file = createReadStream(join(process.cwd(), filePath));
 
     // TODO: use https://docs.nestjs.com/techniques/streaming-files in nest +8.0
-    const { fileName } = adniReaderInDto;
+    // const { fileName } = adniReaderInDto;
     // const filename = path ? join(path, name) : name;
     const finalFile = new StreamableFile(file);
     // res.set({
@@ -71,9 +71,7 @@ export class AdniReaderController {
     // });
     res.header({ 'Content-Type': 'text/csv' });
     res.header({
-      'Content-Disposition': `attachment; filename="${
-        fileName ? fileName : new Date().getTime()
-      }.csv"`,
+      'Content-Disposition': `attachment; filename="${new Date().getTime()}.csv"`,
     });
     res.header({ 'Access-Control-Expose-Headers': 'Content-Disposition' });
 

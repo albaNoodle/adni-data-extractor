@@ -66,28 +66,35 @@ export class AdniImagesService {
     const phenotypesToProcess: PhenotypeCreateDto[] = [];
     let keys;
     for await (const row of stream) {
-      const createAdniImage: AdniImageCreateDto = {
-        imageUid: row['IMAGEUID'],
-        rid: row['RID'],
-        visCode: row['VISCODE'],
-        examDate: row['EXAMDATE'],
-      };
-      adniImagesToProcess.push(createAdniImage);
-
-      //Create the fenotypes assosiated with the image (from position 22 till semipenultima)
-      if (!keys) {
-        keys = Object.keys(row);
-      }
-
-      for (let i = 22; i < keys.length - 1; i++) {
-        const value = row[keys[i]];
-
-        const createPhenotypeDto: PhenotypeCreateDto = {
+      if (row['IMAGEUID'] && row['IMAGEUID'].length > 0) {
+        const createAdniImage: AdniImageCreateDto = {
           imageUid: row['IMAGEUID'],
-          brainPartKeyname: keys[i],
-          value: value ? value : -1,
+          rid: row['RID'],
+          visCode: row['VISCODE'],
+          examDate: row['EXAMDATE'],
         };
-        phenotypesToProcess.push(createPhenotypeDto);
+        adniImagesToProcess.push(createAdniImage);
+
+        //Create the fenotypes assosiated with the image (from position 22 till semipenultima)
+        if (!keys) {
+          keys = Object.keys(row);
+        }
+
+        // Standard image file or adnimerge file
+        let i = keys.indexOf('IMAGEUID') !== 8 ? keys.indexOf('IMAGEUID') + 1 : 22;
+
+        for (i; i < keys.length - 1; i++) {
+          const value = row[keys[i]];
+          if (!isNaN(value)) {
+            const createPhenotypeDto: PhenotypeCreateDto = {
+              imageUid: row['IMAGEUID'],
+              brainPartKeyname: keys[i],
+              value: value ? value : -1,
+            };
+            // console.log(createPhenotypeDto);
+            phenotypesToProcess.push(createPhenotypeDto);
+          }
+        }
       }
     }
 
